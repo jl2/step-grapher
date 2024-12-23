@@ -43,6 +43,7 @@
   (flet ((count-leading-whitespace ()
            (loop :for char :across string
                  :for i :from 0
+                 :while char
                  :until (not (whitespace-p char))
                  :finally (return i))))
     (subseq string (count-leading-whitespace))))
@@ -148,7 +149,8 @@ Return nil at end of file."
   "Return t if a character is a whitespace, nil otherwise."
   (declare (type character char))
   #+sbcl (sb-unicode:whitespace-p char)
-  #-sbcl (cl-unicode:has-property char "whitespace"))
+  #+clisp (find char (list #\space #\tab #\newline) :test #'char=)
+  #-(or sbcl clisp) (cl-unicode:has-property char "whitespace"))
 
 (defun numeric-p (char)
   "Check if char is a digit 0-9."
@@ -192,10 +194,10 @@ Return nil at end of file."
 (defun graph-step-file (step-file-name
                         &key
                           (dot-file-name (merge-pathnames (make-pathname :type "dot")
-                                                          (sg:find-step-file step-file-name)))
+                                                          (find-step-file step-file-name)))
                           (output-type "svg")
                           (out-file-name (merge-pathnames (make-pathname :type output-type)
-                                                          (sg:find-step-file step-file-name)))
+                                                          (find-step-file step-file-name)))
                           (open-file t)
                           (node-sep 0.4)
                           (spline-type "true")
@@ -225,42 +227,41 @@ If open-file is a string, it should be the name of a program to open out-file-na
               (namestring step-pathname)
               node-sep
               spline-type)
-      (time
-       (with-input-from-file (ins step-pathname)
-         (let ((step-table (make-hash-table)))
-           ;; First build up a table of ID -> step-entity
-           (loop :for entity = (read-step-statement ins)
-                 :while entity
-                 :for this-id = (slot-value entity 'id)
-                 :when (and entity
-                            (not (zerop this-id)))
-                   :do
-                      (setf (gethash this-id step-table) entity))
-           ;; Next, write the dot file by iterating over the hashtable
-           ;; and writing node labels followed by edges to its references,
-           ;; ID0 -> ID1; ID0 -> ID2; ID0 -> #ID3; ...
-           ;; Skip entity types that are in skip-list
-           (loop
-             :for id :being :the :hash-keys :of step-table
-               :using (hash-value entity)
-             :do
-                (with-slots (id entity-type references text) entity
-                  (when (not (find entity-type skip-list :test #'string-equal))
-                    (format dots
-                            "~s [label=\"~a(~a)\" tooltip=\"~a\"];~%"
-                            id
-                            (elide-text entity-type 512)
-                            id
-                            (elide-text text 512))
-                    (loop
-                      :with from = id
-                      :for goes-to :in references
-                      :for goes-to-type = (slot-value (gethash goes-to step-table) 'entity-type)
-                      :for should-skip = (find goes-to-type skip-list :test #'string-equal)
-                      :when (not should-skip) :do
-                        (format dots "~s -> ~s;~%" from goes-to)))))
-           
-           )))
+      (with-input-from-file (ins step-pathname)
+        (let ((step-table (make-hash-table)))
+          ;; First build up a table of ID -> step-entity
+          (loop :for entity = (read-step-statement ins)
+                :while entity
+                :for this-id = (slot-value entity 'id)
+                :when (and entity
+                           (not (zerop this-id)))
+                  :do
+                     (setf (gethash this-id step-table) entity))
+          ;; Next, write the dot file by iterating over the hashtable
+          ;; and writing node labels followed by edges to its references,
+          ;; ID0 -> ID1; ID0 -> ID2; ID0 -> #ID3; ...
+          ;; Skip entity types that are in skip-list
+          (loop
+            :for id :being :the :hash-keys :of step-table
+              :using (hash-value entity)
+            :do
+               (with-slots (entity-type references text) entity
+                 (when (not (find entity-type skip-list :test #'string-equal))
+                   (format dots
+                           "~s [label=\"~a(~a)\" tooltip=\"~a\"];~%"
+                           id
+                           (elide-text entity-type 512)
+                           id
+                           (elide-text text 512))
+                   (loop
+                     :with from = id
+                     :for goes-to :in references
+                     :for goes-to-type = (slot-value (gethash goes-to step-table) 'entity-type)
+                     :for should-skip = (find goes-to-type skip-list :test #'string-equal)
+                     :when (not should-skip) :do
+                       (format dots "~s -> ~s;~%" from goes-to)))))
+          
+          ))
       (format dots "}~%")))
 
   ;; Use GraphViz to generate the graph
@@ -272,7 +273,7 @@ If open-file is a string, it should be the name of a program to open out-file-na
                      (namestring dot-file-name))))
     (format t "Running: ~s~%" cmd)
     (if wait-for-dot
-        (time (uiop:run-program cmd :output t :error-output t :force-shell t))
+        (uiop:run-program cmd :output t :error-output t :force-shell t)
         (uiop:launch-program cmd :output t :error-output t :force-shell t))
     
     (cond ((stringp open-file)
