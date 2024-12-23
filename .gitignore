@@ -5,16 +5,18 @@ manifest.txt
 .config
 
 *.fasl
+*.fas
+*.lib
 *.*fsl
 *.abcl
 *.cls
 *.abcl-tmp
 
+*.stp
 *.dot
 *.svg
 *.pdf
 
-!step-file/as1.dot
-!step-file/as1.svg
-!step-file/test1.dot
-!step-file/test1.svg
+step-files
+!step-files/as1.stp
+!step-files/test1.stp
