@@ -158,7 +158,7 @@ Return nil at end of file."
   ((id :type fixnum
        :initarg :id
        :documentation "The entity ID.")
-   (entity-type :type symbol
+   (entity-type :type string
                 :initarg :entity-type
                 :documentation "The entity type (the identifier following the #123 = <entity-type> ( ... );)")
    (references :type list
