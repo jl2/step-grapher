@@ -247,7 +247,7 @@ If open-file is a string, it should be the name of a program to open out-file-na
                 (with-slots (id entity-type references text) entity
                   (when (not (find entity-type skip-list :test #'string-equal))
                     (format dots
-                            "~s [label=\"~a(~a)\" tooltip=\"~a\"];"
+                            "~s [label=\"~a(~a)\" tooltip=\"~a\"];~%"
                             id
                             (elide-text entity-type 512)
                             id
