@@ -14,7 +14,7 @@
 ;; OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 (asdf:defsystem #:step-grapher
-  :description "Use GraphViz to show a STEP file's reference tree."
+  :description "Use GraphViz to show a STEP file's reference structure."
   :author "Jeremiah LaRocco <jeremiah_larocco@fastmail.com>"
   :license  "ISC"
   :version "0.0.1"

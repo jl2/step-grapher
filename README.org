@@ -1,14 +1,45 @@
 * step-grapher
 
 ** About
-This is a project to do something.
+
+This is a Common Lisp package to graph the structure of a [[https://en.wikipedia.org/wiki/ISO_10303][STEP File]] using GraphViz.
+
+[[[[step-files/as1.svg]]]]
+
+It can be used from the Lisp REPL, or compiled into a standalone program.
+
+** REPL Examples
+
+First, clone the repo into you QuickLisp "local projects" directory, then load the `step-grapher` package:
+#+begin_src lisp
+  (ql:quickload :step-grapher)
+#+end_src
+
+#+RESULTS:
+: T
+
+Next call `sg:graph-step-file`:
+
+#+begin_src lisp
+  (sg:graph-step-file "as1.stp" :output-type "pdf")
+#+end_src
+
+`sg:graph-step-file` can take a full to a STEP file, or a name relative to one of the directories listed in sg::*step-file-dirs*, which defaults to the `step-file` directory in the package.
+
+** Standalone Example
+First clone the repo and build using Make.  See `step-grapher --help` to see available command line arguments.
+
+#+begin_src shell
+  git clone https://github.com/jl2/step-grapher.git
+  cd step-grapher
+  make
+  ./step-grapher --help
+  ./step-grapher as1.stp
+#+end_src
+
 
 ** License
 ISC
 
 Copyright (c) 2024 Jeremiah LaRocco <jeremiah_larocco@fastmail.com>
 
-
-
-* Plan
-** TODO Fill in a TODO list.
