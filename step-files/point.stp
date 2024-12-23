@@ -1,0 +1,18 @@
+ISO-10303-21;
+HEADER;
+FILE_DESCRIPTION (( 'STEP AP242' ),
+    '1' );
+FILE_NAME ('point.step',
+    '2024-12-22T13:06:00',
+    ( 'JL2' ),
+    ( 'jlarocco.com' ),
+    'jlarocco',
+    'jlarocco',
+    '' );
+FILE_SCHEMA (( 'AUTOMOTIVE_DESIGN' ));
+ENDSEC;
+
+DATA;
+#2 = CARTESIAN_POINT ( 'NONE',  ( 30.08489326513317508, -10.63934519965476255, 14.60100000000000087 ) ) ;
+ENDSEC;
+END-ISO-10303-21;
