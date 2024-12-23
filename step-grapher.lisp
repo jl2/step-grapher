@@ -36,84 +36,112 @@
     (pathname
      (probe-file fname))))
 
-(defun count-leading-whitespace (string)
-  (loop :for char :across string
-        :for i :from 0
-        :until (not (whitespace-p char))
-        :finally (return i)))
+
 
 (defun strip-leading-whitespace (string)
-  (subseq string (count-leading-whitespace string)))
+  "Return a new string with leading whitespace removed."
+  (flet ((count-leading-whitespace ()
+           (loop :for char :across string
+                 :for i :from 0
+                 :until (not (whitespace-p char))
+                 :finally (return i))))
+    (subseq string (count-leading-whitespace))))
 
 (defun read-entity-type (step-statement)
-  (let ((right-hand-side (if (find #\= step-statement)
-                             (subseq step-statement (1+ (search "=" step-statement)))
-                             step-statement)))
+  "Try to find the entity type of step-statement.~
+In the form \"#1 = CARTESIAN_POINT(...);\"~ the entity type is \"CARTESIAN_POINT\".~
+Statements of the form\"#1 = (...)\" are not supported, and the type \"unsupported-constraint\" is returned.~
+This function is a hack, and needs to be improved."
+  (let ((right-hand-side
+          (if (find #\= step-statement)
+              ;; TODO: What if = is in a string? or occurs multiple times?
+              (subseq step-statement (1+ (search "=" step-statement)))
+              step-statement)))
     (cond ((char= (aref right-hand-side 0) #\()
            "unsupported-constraint")
           (t
            (symbol-name (read-from-string right-hand-side))))))
 
+(defun parse-simple-entity (step-statement)
+  "Create a step-entity from a step-statement of the form \"#123 = some_thing(..., #4, #45, #23, ...);\""
+  (loop :with entity-type = (read-entity-type step-statement)
+        :with entity-ids list = nil
+        :with cur-entity-id fixnum = 0
+        :with in-string = nil
+        :with in-entity-id = nil
+
+        :for char :across step-statement
+
+        :when (char= char #\')
+          :do (setf in-string (not in-string))
+
+        :when (and (not in-string)
+                   (char= char #\#))
+          :do (setf in-entity-id t)
+
+        :when (and in-entity-id (numeric-p char))
+          :do (setf cur-entity-id (+ (* cur-entity-id 10)
+                                     (- (char-code char)
+                                        (char-code #\0))))
+        :when (and in-entity-id
+                   (not (numeric-p char))
+                   (> cur-entity-id 0))
+          :do
+             (push cur-entity-id entity-ids)
+             (setf cur-entity-id 0
+                   in-entity-id nil)
+
+        :finally
+           (return
+             (when entity-ids
+               (let ((result (reverse entity-ids)))
+                       
+                 (make-instance 'step-entity
+                                :id (first result)
+                                :entity-type entity-type
+                                :references (rest result)
+                                :text step-statement))))))
 (defun parse-statement (step-statement)
-  
+  "Create a step-entity from a string."
   (cond
     ;; Check for statements starting with #number = ...
     ((char= #\# (aref step-statement 0))
-     (loop :with entity-ids list = nil
-           :with cur-entity-id fixnum = 0
-           :with entity-type = (read-entity-type step-statement)
-           :with in-string = nil
-           :with in-entity-id = nil
-           :for char :across step-statement
-           :do
-              (cond ((char= char #\')
-                     (setf in-string (not in-string)))
+     (parse-simple-entity step-statement))
 
-                    ((and (not in-string)
-                          (char= char #\#))
-                     (setf in-entity-id t))
-                    ((and in-entity-id (numeric-p char))
-                     (setf cur-entity-id (+ (* cur-entity-id 10)
-                                            (- (char-code char)
-                                               (char-code #\0)))))
-                    ((and in-entity-id
-                          (> cur-entity-id 0))
-                     (push cur-entity-id entity-ids)
-                     (setf cur-entity-id 0
-                           in-entity-id nil)))
-           :finally (return (when entity-ids
-                              (let ((result (reverse entity-ids)))
-                                    
-                                (make-instance 'step-entity
-                                               :id (first result)
-                                               :entity-type entity-type
-                                               :references (rest result)))))))
+    ;; A real parser would parse other things, like headers,
+    ;; but this tool doesn't use that data, so , so create a leaf node
     (t
      (make-instance 'step-entity
                     :id 0
                     :references nil
-                    :entity-type (read-entity-type step-statement)))))
+                    :entity-type (read-entity-type step-statement)
+                    :text step-statement))))
 
 (defun read-step-statement (stream)
-  (let ((chars (loop
-                 :for previous-was-whitespace = nil :then is-whitespace
-                 :for nc = (peek-char t stream nil nil nil)
-                   :then (peek-char nil stream nil nil nil)
-                 :while nc
-                 :for is-whitespace = (whitespace-p nc)
-                 :until (char= nc #\;)
-                 :when (and is-whitespace
-                            (not previous-was-whitespace))
-                   :collect #\space
-                 :when is-whitespace
-                   :do (read-char stream nil nil)
-                 :when (not is-whitespace)
-                   :collect (read-char stream nil nil)))
+  "Read the next statement from stream and try to parse it into a step-entity.~
+Return nil at end of file."
+  (let ((chars
+          (loop
+            :for previous-was-whitespace = nil :then is-whitespace
+            :for nc = (peek-char t stream nil nil nil)
+              :then (peek-char nil stream nil nil nil)
+            :while nc
+            :for is-whitespace = (whitespace-p nc)
+            :until (char= nc #\;)
+            :when (and is-whitespace
+                       (not previous-was-whitespace))
+              :collect #\space
+            :when is-whitespace
+              :do (read-char stream nil nil)
+            :when (not is-whitespace)
+              :collect (read-char stream nil nil)))
         (semi-colon (read-char stream nil nil)))
     (declare (ignorable semi-colon))
     (if (null chars)
         nil
-        (parse-statement (strip-leading-whitespace (coerce chars 'string))))))
+        (parse-statement
+         (strip-leading-whitespace
+          (coerce chars 'string))))))
 
 
 (defun whitespace-p (char)
@@ -123,6 +151,7 @@
   #-sbcl (cl-unicode:has-property char "whitespace"))
 
 (defun numeric-p (char)
+  "Check if char is a digit 0-9."
   (find char #(#\0 #\1 #\2 #\3 #\4 #\5 #\6 #\7 #\8 #\9) :test #'char=))
 
 (defclass step-entity ()
@@ -134,17 +163,11 @@
                 :documentation "The entity type (the identifier following the #123 = <entity-type> ( ... );)")
    (references :type list
                :initarg :references
-               :documentation "The entity IDs that this entity references."))
+               :documentation "The entity IDs that this entity references.")
+   (text :type string
+         :initarg :text
+         :documentation "The text from the STEP file defining this entity."))
   (:documentation "A dumbed down STEP entity."))
-
-(defun substring-to (str char start &optional (skip-whitespace t))
-  (let* ((real-start (if (not skip-whitespace)
-                         start
-                         (loop :for i = start
-                               :until (or (> (length str) i)
-                                          (not (whitespace-p (aref str i)))))))
-         (idx (find char str :start real-start :test #'char=)))
-    (subseq str real-start idx)))
 
 (defun read-step-file (fname)
   (with-input-from-file (ins (find-step-file fname))
@@ -171,12 +194,26 @@
                                        "VERTEX_POINT"
                                        ;; "EDGE_LOOP"
                                        )))
+  "Create (and optionally display) a graph of the STEP file named by step-file-name.~
+Entity types listed in skip-list will not be represented in the output graph. ~
+graph-cmd, spline-type, node-sep control a few Dot parameters and how Dot is invoked.~
+output-type, dot-file-name, and out-file-name control the Dot output.  Default is SVG, ~
+using the same name as the STEP file, but with .svg and .dot extensions. ~
+If open-file is t, the out-file-name graph image will be opened in a sensible viewer. ~
+If open-file is a string, it should be the name of a program to open out-file-name with."
+
   (let ((step-pathname (find-step-file step-file-name)))
+    ;; Generate the .dot file
     (with-output-to-file (dots dot-file-name)
-      (format dots "digraph ~s { rankdir=\"LR\"~%nodesep=~a~%overlap=false~%splines=~a~%" (namestring step-pathname) node-sep spline-type)
+      (format dots
+              "digraph ~s { rankdir=\"LR\"~%nodesep=~a~%overlap=false~%splines=~a~%"
+              (namestring step-pathname)
+              node-sep
+              spline-type)
       (time
        (with-input-from-file (ins step-pathname)
          (let ((step-table (make-hash-table)))
+           ;; First build up a table of ID -> step-entity
            (loop :for entity = (read-step-statement ins)
                  :while entity
                  :for this-id = (slot-value entity 'id)
@@ -184,22 +221,29 @@
                             (not (zerop this-id)))
                    :do
                       (setf (gethash this-id step-table) entity))
-           (loop :for id :being :the :hash-keys :of step-table
-                   :using (hash-value entity)
-                 :do
-                    (with-slots (id entity-type references) entity
-                      (when (not (find entity-type skip-list :test #'string-equal))
-                        (format dots "~s [label=\"~a(~a)\"];" id entity-type id)
-                        (loop
-                          :with from = id
-                          :for goes-to :in references
-                          :for goes-to-type = (slot-value (gethash goes-to step-table) 'entity-type)
-                          :for should-skip = (find goes-to-type skip-list :test #'string-equal)
-                          :when (not should-skip) :do
-                            (format dots "~s -> ~s;~%" from goes-to)))))
+           ;; Next, write the dot file by iterating over the hashtable
+           ;; and writing node labels followed by edges to its references,
+           ;; ID0 -> ID1; ID0 -> ID2; ID0 -> #ID3; ...
+           ;; Skip entity types that are in skip-list
+           (loop
+             :for id :being :the :hash-keys :of step-table
+               :using (hash-value entity)
+             :do
+                (with-slots (id entity-type references) entity
+                  (when (not (find entity-type skip-list :test #'string-equal))
+                    (format dots "~s [label=\"~a(~a)\"];" id entity-type id)
+                    (loop
+                      :with from = id
+                      :for goes-to :in references
+                      :for goes-to-type = (slot-value (gethash goes-to step-table) 'entity-type)
+                      :for should-skip = (find goes-to-type skip-list :test #'string-equal)
+                      :when (not should-skip) :do
+                        (format dots "~s -> ~s;~%" from goes-to)))))
            
            )))
       (format dots "}~%")))
+
+  ;; Use GraphViz to generate the graph
   (let ((cmd (format nil
                      "~a -T~a -o ~s ~s"
                      graph-cmd
@@ -208,6 +252,7 @@
                      (namestring dot-file-name))))
     (format t "Running: ~s~%" cmd)
     (time (uiop:run-program cmd :output t :error-output t :force-shell t))
+    
     (cond ((stringp open-file)
            (uiop:run-program (format nil "~a ~s &" open-file (namestring out-file-name))))
           (open-file
