@@ -4,7 +4,7 @@
 
 This is a Common Lisp package to graph the structure of a [[https://en.wikipedia.org/wiki/ISO_10303][STEP File]] using GraphViz.
 
-[[[[step-files/as1.svg]]]]
+[[[step-files/as1.svg]]]
 
 It can be used from the Lisp REPL, or compiled into a standalone program.
 
