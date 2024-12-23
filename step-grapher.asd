@@ -23,7 +23,8 @@
   :depends-on (#:alexandria
                #:uiop
                #-sbcl #:cl-unicode
-               #:cl-ppcre)
+               #:cl-argparse
+               )
 
   :components ((:file "package")
                (:file "main")

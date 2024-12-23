@@ -186,6 +186,7 @@ Return nil at end of file."
                           (node-sep 0.4)
                           (spline-type "true")
                           (graph-cmd "dot")
+                          (wait-for-dot open-file)
                           (skip-list '("CARTESIAN_POINT"
                                        ;; "ORIENTED_EDGE"
                                        "DIRECTION"
@@ -229,9 +230,9 @@ If open-file is a string, it should be the name of a program to open out-file-na
              :for id :being :the :hash-keys :of step-table
                :using (hash-value entity)
              :do
-                (with-slots (id entity-type references) entity
+                (with-slots (id entity-type references text) entity
                   (when (not (find entity-type skip-list :test #'string-equal))
-                    (format dots "~s [label=\"~a(~a)\"];" id entity-type id)
+                    (format dots "~s [label=\"~a(~a)\" tooltip=\"~a\"];" id entity-type id text)
                     (loop
                       :with from = id
                       :for goes-to :in references
@@ -251,10 +252,12 @@ If open-file is a string, it should be the name of a program to open out-file-na
                      (namestring out-file-name)
                      (namestring dot-file-name))))
     (format t "Running: ~s~%" cmd)
-    (time (uiop:run-program cmd :output t :error-output t :force-shell t))
+    (if wait-for-dot
+        (time (uiop:run-program cmd :output t :error-output t :force-shell t))
+        (uiop:launch-program cmd :output t :error-output t :force-shell t))
     
     (cond ((stringp open-file)
-           (uiop:run-program (format nil "~a ~s &" open-file (namestring out-file-name))))
+           (uiop:launch-program (format nil "~a ~s &" open-file (namestring out-file-name))))
           (open-file
            (let ((open-program (assoc-value '(("pdf" . "mupdf")
                                               ("svg" . "firefox")
