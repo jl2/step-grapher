@@ -169,6 +169,10 @@ Return nil at end of file."
          :documentation "The text from the STEP file defining this entity."))
   (:documentation "A dumbed down STEP entity."))
 
+(defmethod cl:print-object ((object step-entity) stream)
+  (with-slots (id entity-type) object
+    (format stream "(step-entity ~a ~a)" id entity-type)))
+
 (defun read-step-file (fname)
   (with-input-from-file (ins (find-step-file fname))
     (loop :for statement = (read-step-statement ins)
