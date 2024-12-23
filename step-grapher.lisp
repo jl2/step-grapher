@@ -269,4 +269,4 @@ If open-file is a string, it should be the name of a program to open out-file-na
                                               ("jpg" . "xnview"))
                                             output-type :test #'string-equal)))
              (when open-program
-               (uiop:run-program (format nil "~a ~s" open-program (namestring out-file-name)))))))))
+               (uiop:launch-program (format nil "~a ~s" open-program (namestring out-file-name)))))))))
