@@ -28,6 +28,12 @@ Next call `sg:graph-step-file`:
 
 `sg:graph-step-file` can take a full to a STEP file, or a name relative to one of the directories listed in sg::*step-file-dirs*, which defaults to the `step-file` directory in the package.
 
+By default several entity types are not shown in the graph, to avoid clutterin the output.  Use the :skip-list keyword parameter to control which entities are culled.  Use nil to show all entities. 
+
+#+begin_src lisp
+  (sg:graph-step-file "as1.stp" :output-type "svg" :skip-list nil)
+#+end_src
+
 ** Standalone Example
 First clone the repo and build using Make.  See `step-grapher --help` to see available command line arguments.
 
@@ -36,9 +42,11 @@ First clone the repo and build using Make.  See `step-grapher --help` to see ava
   cd step-grapher
   make
   ./step-grapher --help
-  ./step-grapher as1.stp
+  ./step-grapher test1.stp
+  ./step-grapher --no-skip as1.stp
 #+end_src
 
+By default several terminal entities are skipped to avoid cluttering the graph.  Use the --no-skip command line option to disable skipping them
 
 ** License
 ISC
