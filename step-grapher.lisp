@@ -109,7 +109,7 @@ This function is a hack, and needs to be improved."
      (parse-simple-entity step-statement))
 
     ;; A real parser would parse other things, like headers,
-    ;; but this tool doesn't use that data, so , so create a leaf node
+    ;; but this tool doesn't use that data, so , so create a dummy node
     (t
      (make-instance 'step-entity
                     :id 0
