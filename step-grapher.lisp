@@ -179,6 +179,16 @@ Return nil at end of file."
           :while statement
           :collect statement)))
 
+(defun elide-text (text max-length)
+  "Shorten text to max-length.  If the string is longer than max-length, shortens to (- max-length 3) and appends \"...\" "
+  (let ((elide-text (> (length text)  max-length)))
+    (if elide-text
+        (concatenate 'string
+                     (subseq text 0
+                             (max 0 (- max-length 3)))
+                     "...")
+        text)))
+
 (defun graph-step-file (step-file-name
                         &key
                           (dot-file-name (merge-pathnames (make-pathname :type "dot")
@@ -236,7 +246,12 @@ If open-file is a string, it should be the name of a program to open out-file-na
              :do
                 (with-slots (id entity-type references text) entity
                   (when (not (find entity-type skip-list :test #'string-equal))
-                    (format dots "~s [label=\"~a(~a)\" tooltip=\"~a\"];" id entity-type id text)
+                    (format dots
+                            "~s [label=\"~a(~a)\" tooltip=\"~a\"];"
+                            id
+                            (elide-text entity-type 512)
+                            id
+                            (elide-text text 512))
                     (loop
                       :with from = id
                       :for goes-to :in references
