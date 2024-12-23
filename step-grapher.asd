@@ -22,7 +22,7 @@
 
   :depends-on (#:alexandria
                #:uiop
-               #:parseq
+               #-sbcl #:cl-unicode
                #:cl-ppcre)
 
   :components ((:file "package")

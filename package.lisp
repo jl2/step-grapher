@@ -19,5 +19,9 @@
 
   (:use #:cl #:alexandria)
   (:export #:main
+           #:find-step-file
            #:read-step-file
-           ))
+           #:graph-step-file
+           #:read-step-statement
+           #:read-entity-type
+           #:collect-references))

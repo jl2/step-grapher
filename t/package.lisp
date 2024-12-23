@@ -25,5 +25,7 @@
 (def-suite :step-grapher)
 (in-suite :step-grapher)
 
-(test hello
-  (is-true (hello)))
+(test read-step-statement
+      (with-input-from-string (ins "ISO-10303-21;")
+        (is-true (string= (sg:read-step-statement ins)
+                          "ISO-10303-21"))))
