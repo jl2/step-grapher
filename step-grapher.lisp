@@ -59,60 +59,94 @@ In the form \"#1 = CARTESIAN_POINT(...);\"~ the entity type is \"CARTESIAN_POINT
 Statements of the form\"#1 = (...)\" try to use the first entity in the parenthesis as their type. ~
 More complicated nested statements are not supported, and return the type \"unsupported-entity\" is returned. ~
 This function is a hack, and needs to be improved."
+  
   (let ((right-hand-side
+          ;; If there's an =, like in "#123 = ...", then skip the left side and the equal sign 
           (if-let (eq-offset (search "=" step-statement))
-              ;; TODO: What if = is in a string? or occurs multiple times?
-              (subseq step-statement (1+ eq-offset))
-              step-statement)))
+            ;; TODO: What if = is in a string? or occurs multiple times?
+            (strip-leading-whitespace (subseq step-statement (1+ eq-offset)))
+            ;; Else use the whole statement
+            step-statement)))
     (with-input-from-string (ins right-hand-side)
-      (cond ((and (char= (peek-char t ins nil nil) #\()
-                  (read-char ins nil nil)
-                  (alpha-char-p (peek-char t ins nil nil)))
-             (symbol-name (read ins nil nil)))
-            ((char= (peek-char t ins nil nil) #\()
-             "unsupported-constraint")
-            (t
-             (symbol-name (read ins)))))))
+      
+      (cond
+        ;; If there's a parenthesis, 
+        ((and (char= (peek-char t ins nil nil) #\()
+              ;; skip it
+              (read-char ins nil nil)
+              ;; and check if it's a letter
+              (alpha-char-p (peek-char t ins nil nil)))
+         ;; then use the built-in #'read to get the entity-type string
+         (symbol-name (read ins nil nil)))
+
+        ;; If it starts with a parenthesis and didn't go through the first condition, then
+        ;; it's unsupported, so return that.
+        ((char= (peek-char t ins nil nil) #\()
+         "unsupported-entity")
+
+        ;; Finally, the statement didn't start with a parenthesis, so try reading the
+        ;; entity-type using the built in read function
+        (t
+         (symbol-name (read ins)))))))
 
 (defun parse-simple-entity (step-statement)
   "Create a step-entity from a step-statement of the form \"#123 = some_thing(..., #4, #45, #23, ...);\""
-  (loop :with entity-type = (read-entity-type step-statement)
-        :with entity-ids list = nil
-        :with cur-entity-id fixnum = 0
-        :with in-string = nil
-        :with in-entity-id = nil
+  
+  (loop
+    ;; Variables mutated in the loop
+    :with entity-type = (read-entity-type step-statement)
 
-        :for char :across step-statement
+    ;; The list of entity-ids in step-statement
+    :with entity-ids list = nil
 
-        :when (char= char #\')
-          :do (setf in-string (not in-string))
+    ;; Info about the parsing state
+    :with cur-entity-id fixnum = 0
+    :with in-string = nil
+    :with in-entity-id = nil
 
-        :when (and (not in-string)
-                   (char= char #\#))
-          :do (setf in-entity-id t)
+    ;; Loop over the characters in step-statement
+    :for char :across step-statement
 
-        :when (and in-entity-id (numeric-p char))
-          :do (setf cur-entity-id (+ (* cur-entity-id 10)
-                                     (- (char-code char)
-                                        (char-code #\0))))
-        :when (and in-entity-id
-                   (not (numeric-p char))
-                   (> cur-entity-id 0))
-          :do
-             (push cur-entity-id entity-ids)
-             (setf cur-entity-id 0
-                   in-entity-id nil)
+    ;; ' starts and ends a string
+    :when (char= char #\')
+      :do (setf in-string (not in-string))
 
-        :finally
-           (return
-             (when entity-ids
-               (let ((result (reverse entity-ids)))
-                       
-                 (make-instance 'step-entity
-                                :id (first result)
-                                :entity-type entity-type
-                                :references (rest result)
-                                :text step-statement))))))
+    ;; # outside of a string is the start of an entity-id
+    :when (and (not in-string)
+               (char= char #\#))
+      :do (setf in-entity-id t)
+
+    ;; Add the next digit to the current entity ID
+    :when (and in-entity-id (numeric-p char))
+      :do (setf cur-entity-id (+ (* cur-entity-id 10)
+                                 (- (char-code char)
+                                    (char-code #\0))))
+
+    ;; When it's past the last digit collect the entity-id in entity-ids
+    ;; and reset parsing state
+    :when (and in-entity-id
+               (not (numeric-p char))
+               (> cur-entity-id 0))
+      :do
+         (push cur-entity-id entity-ids)
+         (setf cur-entity-id 0
+               in-entity-id nil)
+
+    :finally
+       ;; Reverse the list, since it's built-up backwards with push,
+       ;; and create a step-entity.  The first entity-id will be the one
+       ;; on the left of the equal sign, and the remaining ones will be the
+       ;; entities referenced by it
+       (return
+         (when entity-ids
+           (let ((result (reverse entity-ids)))
+             
+             (make-instance 'step-entity
+                            :id (first result)
+                            :entity-type entity-type
+                            :references (rest result)
+                            :text step-statement))))))
+
 (defun parse-statement (step-statement)
   "Create a step-entity from a string."
   (cond
