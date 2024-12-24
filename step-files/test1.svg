@@ -3796,16 +3796,16 @@
 <g id="node196" class="node">
 <title>2167</title>
 <g id="a_node196"><a xlink:title="#2167 =( GEOMETRIC_REPRESENTATION_CONTEXT ( 3 ) GLOBAL_UNCERTAINTY_ASSIGNED_CONTEXT ( ( #997 ) ) GLOBAL_UNIT_ASSIGNED_CONTEXT ( ( #1179, #430, #3126 ) ) REPRESENTATION_CONTEXT ( &#39;NONE&#39;, &#39;WORKASPACE&#39; ) )">
-<ellipse fill="none" stroke="black" cx="1887.94" cy="-33765" rx="150.27" ry="18"/>
-<text text-anchor="middle" x="1887.94" y="-33761.3" font-family="Times,serif" font-size="14.00">unsupported&#45;constraint(2167)</text>
+<ellipse fill="none" stroke="black" cx="1887.94" cy="-33765" rx="247.76" ry="18"/>
+<text text-anchor="middle" x="1887.94" y="-33761.3" font-family="Times,serif" font-size="14.00">GEOMETRIC_REPRESENTATION_CONTEXT(2167)</text>
 </a>
 </g>
 </g>
 <!-- 231&#45;&gt;2167 -->
 <g id="edge113" class="edge">
 <title>231&#45;&gt;2167</title>
-<path fill="none" stroke="black" d="M1597.25,-33765C1643.07,-33765 1687.67,-33765 1727.6,-33765"/>
-<polygon fill="black" stroke="black" points="1727.65,-33768.5 1737.65,-33765 1727.65,-33761.5 1727.65,-33768.5"/>
+<path fill="none" stroke="black" d="M1597.25,-33765C1608.24,-33765 1619.15,-33765 1629.95,-33765"/>
+<polygon fill="black" stroke="black" points="1630.26,-33768.5 1640.26,-33765 1630.26,-33761.5 1630.26,-33768.5"/>
 </g>
 <!-- 1043 -->
 <g id="node571" class="node">
@@ -3841,16 +3841,16 @@
 <g id="node371" class="node">
 <title>430</title>
 <g id="a_node371"><a xlink:title="#430 =( NAMED_UNIT ( * ) PLANE_ANGLE_UNIT ( ) SI_UNIT ( $, .RADIAN. ) )">
-<ellipse fill="none" stroke="black" cx="2571.93" cy="-33733" rx="144.07" ry="18"/>
-<text text-anchor="middle" x="2571.93" y="-33729.3" font-family="Times,serif" font-size="14.00">unsupported&#45;constraint(430)</text>
+<ellipse fill="none" stroke="black" cx="2571.93" cy="-33733" rx="102.08" ry="18"/>
+<text text-anchor="middle" x="2571.93" y="-33729.3" font-family="Times,serif" font-size="14.00">NAMED_UNIT(430)</text>
 </a>
 </g>
 </g>
 <!-- 2167&#45;&gt;430 -->
 <g id="edge999" class="edge">
 <title>2167&#45;&gt;430</title>
-<path fill="none" stroke="black" d="M2028.18,-33758.47C2144.21,-33753.02 2308.89,-33745.3 2426.37,-33739.78"/>
-<polygon fill="black" stroke="black" points="2426.7,-33743.27 2436.52,-33739.31 2426.37,-33736.28 2426.7,-33743.27"/>
+<path fill="none" stroke="black" d="M2096.34,-33755.27C2217.27,-33749.59 2364.82,-33742.67 2462.98,-33738.07"/>
+<polygon fill="black" stroke="black" points="2463.39,-33741.55 2473.21,-33737.59 2463.06,-33734.56 2463.39,-33741.55"/>
 </g>
 <!-- 997 -->
 <g id="node771" class="node">
@@ -3864,38 +3864,38 @@
 <!-- 2167&#45;&gt;997 -->
 <g id="edge997" class="edge">
 <title>2167&#45;&gt;997</title>
-<path fill="none" stroke="black" d="M2035.18,-33768.66C2071.55,-33773.66 2109.59,-33782.58 2142.72,-33798 2162.39,-33807.16 2158.82,-33822.31 2178.72,-33831 2238.74,-33857.21 2308.82,-33868.28 2372.99,-33871.87"/>
+<path fill="none" stroke="black" d="M2078.67,-33776.58C2100.84,-33781.72 2122.68,-33788.67 2142.72,-33798 2162.39,-33807.16 2158.82,-33822.31 2178.72,-33831 2238.74,-33857.21 2308.82,-33868.28 2372.99,-33871.87"/>
 <polygon fill="black" stroke="black" points="2373.08,-33875.37 2383.24,-33872.38 2373.43,-33868.38 2373.08,-33875.37"/>
 </g>
 <!-- 1179 -->
 <g id="node772" class="node">
 <title>1179</title>
 <g id="a_node772"><a xlink:title="#1179 =( LENGTH_UNIT ( ) NAMED_UNIT ( * ) SI_UNIT ( .MILLI., .METRE. ) )">
-<ellipse fill="none" stroke="black" cx="3348.22" cy="-33672" rx="150.27" ry="18"/>
-<text text-anchor="middle" x="3348.22" y="-33668.3" font-family="Times,serif" font-size="14.00">unsupported&#45;constraint(1179)</text>
+<ellipse fill="none" stroke="black" cx="3348.22" cy="-33672" rx="111.58" ry="18"/>
+<text text-anchor="middle" x="3348.22" y="-33668.3" font-family="Times,serif" font-size="14.00">LENGTH_UNIT(1179)</text>
 </a>
 </g>
 </g>
 <!-- 2167&#45;&gt;1179 -->
 <g id="edge998" class="edge">
 <title>2167&#45;&gt;1179</title>
-<path fill="none" stroke="black" d="M1948.02,-33748.44C2006.18,-33732.98 2097.78,-33710.85 2178.72,-33701 2540.78,-33656.94 2970.44,-33660.45 3194.3,-33666.46"/>
-<polygon fill="black" stroke="black" points="3194.38,-33669.96 3204.47,-33666.74 3194.57,-33662.96 3194.38,-33669.96"/>
+<path fill="none" stroke="black" d="M1951.36,-33747.55C2009.65,-33732.14 2099.32,-33710.66 2178.72,-33701 2560.49,-33654.54 3017.42,-33660.98 3228.98,-33667.45"/>
+<polygon fill="black" stroke="black" points="3229.07,-33670.96 3239.18,-33667.77 3229.29,-33663.96 3229.07,-33670.96"/>
 </g>
 <!-- 3126 -->
 <g id="node1428" class="node">
 <title>3126</title>
 <g id="a_node1428"><a xlink:title="#3126 =( NAMED_UNIT ( * ) SI_UNIT ( $, .STERADIAN. ) SOLID_ANGLE_UNIT ( ) )">
-<ellipse fill="none" stroke="black" cx="2571.93" cy="-33798" rx="150.27" ry="18"/>
-<text text-anchor="middle" x="2571.93" y="-33794.3" font-family="Times,serif" font-size="14.00">unsupported&#45;constraint(3126)</text>
+<ellipse fill="none" stroke="black" cx="2571.93" cy="-33798" rx="107.78" ry="18"/>
+<text text-anchor="middle" x="2571.93" y="-33794.3" font-family="Times,serif" font-size="14.00">NAMED_UNIT(3126)</text>
 </a>
 </g>
 </g>
 <!-- 2167&#45;&gt;3126 -->
 <g id="edge1000" class="edge">
 <title>2167&#45;&gt;3126</title>
-<path fill="none" stroke="black" d="M2027.36,-33771.7C2142.09,-33777.25 2304.8,-33785.12 2422.26,-33790.81"/>
-<polygon fill="black" stroke="black" points="2422.26,-33794.31 2432.42,-33791.3 2422.6,-33787.32 2422.26,-33794.31"/>
+<path fill="none" stroke="black" d="M2094.48,-33774.95C2213.74,-33780.72 2359.38,-33787.76 2458.01,-33792.54"/>
+<polygon fill="black" stroke="black" points="2457.85,-33796.03 2468,-33793.02 2458.19,-33789.04 2457.85,-33796.03"/>
 </g>
 <!-- 234 -->
 <g id="node197" class="node">
@@ -6025,16 +6025,16 @@
 <g id="node300" class="node">
 <title>4356</title>
 <g id="a_node300"><a xlink:title="#4356 =( LENGTH_UNIT ( ) NAMED_UNIT ( * ) SI_UNIT ( .MILLI., .METRE. ) )">
-<ellipse fill="none" stroke="black" cx="4449.72" cy="-46559" rx="150.27" ry="18"/>
-<text text-anchor="middle" x="4449.72" y="-46555.3" font-family="Times,serif" font-size="14.00">unsupported&#45;constraint(4356)</text>
+<ellipse fill="none" stroke="black" cx="4449.72" cy="-46559" rx="111.58" ry="18"/>
+<text text-anchor="middle" x="4449.72" y="-46555.3" font-family="Times,serif" font-size="14.00">LENGTH_UNIT(4356)</text>
 </a>
 </g>
 </g>
 <!-- 344&#45;&gt;4356 -->
 <g id="edge173" class="edge">
 <title>344&#45;&gt;4356</title>
-<path fill="none" stroke="black" d="M4137.26,-46577.45C4192.36,-46574.18 4252.33,-46570.63 4304.81,-46567.52"/>
-<polygon fill="black" stroke="black" points="4305.08,-46571.01 4314.86,-46566.93 4304.67,-46564.03 4305.08,-46571.01"/>
+<path fill="none" stroke="black" d="M4137.26,-46577.45C4203.04,-46573.55 4275.77,-46569.24 4334.4,-46565.77"/>
+<polygon fill="black" stroke="black" points="4334.65,-46569.26 4344.43,-46565.18 4334.24,-46562.28 4334.65,-46569.26"/>
 </g>
 <!-- 348 -->
 <g id="node301" class="node">
@@ -7219,8 +7219,8 @@
 <g id="node366" class="node">
 <title>427</title>
 <g id="a_node366"><a xlink:title="#427 =( GEOMETRIC_REPRESENTATION_CONTEXT ( 3 ) GLOBAL_UNCERTAINTY_ASSIGNED_CONTEXT ( ( #1045 ) ) GLOBAL_UNIT_ASSIGNED_CONTEXT ( ( #1885, #2973, #1863 ) ) REPRESENTATION_CONTEXT ( &#39;NONE&#39;, &#39;WORKASPACE&#39; ) )">
-<ellipse fill="none" stroke="black" cx="3348.22" cy="-46783" rx="144.07" ry="18"/>
-<text text-anchor="middle" x="3348.22" y="-46779.3" font-family="Times,serif" font-size="14.00">unsupported&#45;constraint(427)</text>
+<ellipse fill="none" stroke="black" cx="3348.22" cy="-46783" rx="241.56" ry="18"/>
+<text text-anchor="middle" x="3348.22" y="-46779.3" font-family="Times,serif" font-size="14.00">GEOMETRIC_REPRESENTATION_CONTEXT(427)</text>
 </a>
 </g>
 </g>
@@ -7236,59 +7236,59 @@
 <!-- 427&#45;&gt;1045 -->
 <g id="edge213" class="edge">
 <title>427&#45;&gt;1045</title>
-<path fill="none" stroke="black" d="M3417.37,-46798.87C3493.65,-46816.43 3621.03,-46845.13 3731.28,-46867 3770,-46874.68 3812.6,-46882.41 3850.27,-46889"/>
+<path fill="none" stroke="black" d="M3422.99,-46800.16C3499.8,-46817.81 3623.7,-46845.65 3731.28,-46867 3770,-46874.68 3812.6,-46882.41 3850.27,-46889"/>
 <polygon fill="black" stroke="black" points="3849.79,-46892.47 3860.24,-46890.74 3850.99,-46885.58 3849.79,-46892.47"/>
 </g>
 <!-- 1885 -->
 <g id="node368" class="node">
 <title>1885</title>
 <g id="a_node368"><a xlink:title="#1885 =( LENGTH_UNIT ( ) NAMED_UNIT ( * ) SI_UNIT ( .MILLI., .METRE. ) )">
-<ellipse fill="none" stroke="black" cx="4449.72" cy="-46876" rx="150.27" ry="18"/>
-<text text-anchor="middle" x="4449.72" y="-46872.3" font-family="Times,serif" font-size="14.00">unsupported&#45;constraint(1885)</text>
+<ellipse fill="none" stroke="black" cx="4449.72" cy="-46876" rx="111.58" ry="18"/>
+<text text-anchor="middle" x="4449.72" y="-46872.3" font-family="Times,serif" font-size="14.00">LENGTH_UNIT(1885)</text>
 </a>
 </g>
 </g>
 <!-- 427&#45;&gt;1885 -->
 <g id="edge214" class="edge">
 <title>427&#45;&gt;1885</title>
-<path fill="none" stroke="black" d="M3467.11,-46793.27C3542.63,-46799.82 3642.72,-46808.47 3731.28,-46816 3935,-46833.32 4171.29,-46853 4315.36,-46864.96"/>
-<polygon fill="black" stroke="black" points="4315.32,-46868.46 4325.57,-46865.8 4315.9,-46861.49 4315.32,-46868.46"/>
+<path fill="none" stroke="black" d="M3506.28,-46796.66C3575.3,-46802.64 3657.32,-46809.71 3731.28,-46816 3946.95,-46834.33 4199.12,-46855.32 4339.73,-46866.98"/>
+<polygon fill="black" stroke="black" points="4339.82,-46870.5 4350.07,-46867.84 4340.4,-46863.52 4339.82,-46870.5"/>
 </g>
 <!-- 2973 -->
 <g id="node369" class="node">
 <title>2973</title>
 <g id="a_node369"><a xlink:title="#2973 =( NAMED_UNIT ( * ) PLANE_ANGLE_UNIT ( ) SI_UNIT ( $, .RADIAN. ) )">
-<ellipse fill="none" stroke="black" cx="3958.11" cy="-46718" rx="150.27" ry="18"/>
-<text text-anchor="middle" x="3958.11" y="-46714.3" font-family="Times,serif" font-size="14.00">unsupported&#45;constraint(2973)</text>
+<ellipse fill="none" stroke="black" cx="3958.11" cy="-46718" rx="107.78" ry="18"/>
+<text text-anchor="middle" x="3958.11" y="-46714.3" font-family="Times,serif" font-size="14.00">NAMED_UNIT(2973)</text>
 </a>
 </g>
 </g>
 <!-- 427&#45;&gt;2973 -->
 <g id="edge215" class="edge">
 <title>427&#45;&gt;2973</title>
-<path fill="none" stroke="black" d="M3458.25,-46771.34C3564.27,-46760 3725.03,-46742.82 3835.23,-46731.03"/>
-<polygon fill="black" stroke="black" points="3835.82,-46734.49 3845.4,-46729.95 3835.08,-46727.53 3835.82,-46734.49"/>
+<path fill="none" stroke="black" d="M3487.16,-46768.25C3599.6,-46756.23 3755.76,-46739.53 3856.63,-46728.74"/>
+<polygon fill="black" stroke="black" points="3857.25,-46732.2 3866.82,-46727.65 3856.51,-46725.24 3857.25,-46732.2"/>
 </g>
 <!-- 1863 -->
 <g id="node370" class="node">
 <title>1863</title>
 <g id="a_node370"><a xlink:title="#1863 =( NAMED_UNIT ( * ) SI_UNIT ( $, .STERADIAN. ) SOLID_ANGLE_UNIT ( ) )">
-<ellipse fill="none" stroke="black" cx="3958.11" cy="-46783" rx="150.27" ry="18"/>
-<text text-anchor="middle" x="3958.11" y="-46779.3" font-family="Times,serif" font-size="14.00">unsupported&#45;constraint(1863)</text>
+<ellipse fill="none" stroke="black" cx="3958.11" cy="-46783" rx="107.78" ry="18"/>
+<text text-anchor="middle" x="3958.11" y="-46779.3" font-family="Times,serif" font-size="14.00">NAMED_UNIT(1863)</text>
 </a>
 </g>
 </g>
 <!-- 427&#45;&gt;1863 -->
 <g id="edge216" class="edge">
 <title>427&#45;&gt;1863</title>
-<path fill="none" stroke="black" d="M3492.51,-46783C3584.12,-46783 3703.06,-46783 3797.66,-46783"/>
-<polygon fill="black" stroke="black" points="3797.9,-46786.5 3807.9,-46783 3797.9,-46779.5 3797.9,-46786.5"/>
+<path fill="none" stroke="black" d="M3590.35,-46783C3676.13,-46783 3768.89,-46783 3839.66,-46783"/>
+<polygon fill="black" stroke="black" points="3839.94,-46786.5 3849.94,-46783 3839.94,-46779.5 3839.94,-46786.5"/>
 </g>
 <!-- 1045&#45;&gt;1885 -->
 <g id="edge478" class="edge">
 <title>1045&#45;&gt;1885</title>
-<path fill="none" stroke="black" d="M4135.88,-46895.81C4191.84,-46892.26 4252.97,-46888.39 4306.22,-46885.02"/>
-<polygon fill="black" stroke="black" points="4306.65,-46888.5 4316.41,-46884.38 4306.21,-46881.52 4306.65,-46888.5"/>
+<path fill="none" stroke="black" d="M4135.88,-46895.81C4202.29,-46891.6 4275.97,-46886.94 4335.13,-46883.19"/>
+<polygon fill="black" stroke="black" points="4335.49,-46886.68 4345.25,-46882.55 4335.04,-46879.69 4335.49,-46886.68"/>
 </g>
 <!-- 431 -->
 <g id="node372" class="node">
@@ -10843,16 +10843,16 @@
 <g id="node573" class="node">
 <title>2445</title>
 <g id="a_node573"><a xlink:title="#2445 =( GEOMETRIC_REPRESENTATION_CONTEXT ( 3 ) GLOBAL_UNCERTAINTY_ASSIGNED_CONTEXT ( ( #3632 ) ) GLOBAL_UNIT_ASSIGNED_CONTEXT ( ( #2839, #914, #2457 ) ) REPRESENTATION_CONTEXT ( &#39;NONE&#39;, &#39;WORKASPACE&#39; ) )">
-<ellipse fill="none" stroke="black" cx="2571.93" cy="-408" rx="150.27" ry="18"/>
-<text text-anchor="middle" x="2571.93" y="-404.3" font-family="Times,serif" font-size="14.00">unsupported&#45;constraint(2445)</text>
+<ellipse fill="none" stroke="black" cx="2571.93" cy="-408" rx="247.76" ry="18"/>
+<text text-anchor="middle" x="2571.93" y="-404.3" font-family="Times,serif" font-size="14.00">GEOMETRIC_REPRESENTATION_CONTEXT(2445)</text>
 </a>
 </g>
 </g>
 <!-- 712&#45;&gt;2445 -->
 <g id="edge343" class="edge">
 <title>712&#45;&gt;2445</title>
-<path fill="none" stroke="black" d="M2142.89,-408C2232.96,-408 2331.71,-408 2411.64,-408"/>
-<polygon fill="black" stroke="black" points="2411.79,-411.5 2421.79,-408 2411.79,-404.5 2411.79,-411.5"/>
+<path fill="none" stroke="black" d="M2142.89,-408C2198.8,-408 2258.06,-408 2314.08,-408"/>
+<polygon fill="black" stroke="black" points="2314.14,-411.5 2324.14,-408 2314.14,-404.5 2314.14,-411.5"/>
 </g>
 <!-- 4572 -->
 <g id="node795" class="node">
@@ -10873,16 +10873,16 @@
 <g id="node719" class="node">
 <title>914</title>
 <g id="a_node719"><a xlink:title="#914 =( NAMED_UNIT ( * ) PLANE_ANGLE_UNIT ( ) SI_UNIT ( $, .RADIAN. ) )">
-<ellipse fill="none" stroke="black" cx="3348.22" cy="-278" rx="144.07" ry="18"/>
-<text text-anchor="middle" x="3348.22" y="-274.3" font-family="Times,serif" font-size="14.00">unsupported&#45;constraint(914)</text>
+<ellipse fill="none" stroke="black" cx="3348.22" cy="-278" rx="102.08" ry="18"/>
+<text text-anchor="middle" x="3348.22" y="-274.3" font-family="Times,serif" font-size="14.00">NAMED_UNIT(914)</text>
 </a>
 </g>
 </g>
 <!-- 2445&#45;&gt;914 -->
 <g id="edge1125" class="edge">
 <title>2445&#45;&gt;914</title>
-<path fill="none" stroke="black" d="M2659.11,-422.71C2743.91,-432.46 2873.65,-434.23 2965.15,-375 2992.87,-357.06 2973.5,-328.06 3001.15,-310 3072.67,-263.28 3170.94,-258.45 3244.49,-263.47"/>
-<polygon fill="black" stroke="black" points="3244.47,-266.98 3254.7,-264.24 3244.99,-260 3244.47,-266.98"/>
+<path fill="none" stroke="black" d="M2675.14,-424.4C2759.63,-432.45 2879.24,-430.6 2965.15,-375 2992.87,-357.06 2973.5,-328.06 3001.15,-310 3078.58,-259.42 3187.37,-257.94 3262.19,-264.89"/>
+<polygon fill="black" stroke="black" points="3262.22,-268.41 3272.52,-265.93 3262.91,-261.45 3262.22,-268.41"/>
 </g>
 <!-- 3632 -->
 <g id="node1536" class="node">
@@ -10896,38 +10896,38 @@
 <!-- 2445&#45;&gt;3632 -->
 <g id="edge1123" class="edge">
 <title>2445&#45;&gt;3632</title>
-<path fill="none" stroke="black" d="M2722.22,-408C2832.4,-408 2984.53,-408 3111.12,-408"/>
-<polygon fill="black" stroke="black" points="3111.34,-411.5 3121.34,-408 3111.34,-404.5 3111.34,-411.5"/>
+<path fill="none" stroke="black" d="M2819.78,-408C2913.1,-408 3018.99,-408 3111.28,-408"/>
+<polygon fill="black" stroke="black" points="3111.31,-411.5 3121.31,-408 3111.31,-404.5 3111.31,-411.5"/>
 </g>
 <!-- 2839 -->
 <g id="node1537" class="node">
 <title>2839</title>
 <g id="a_node1537"><a xlink:title="#2839 =( LENGTH_UNIT ( ) NAMED_UNIT ( * ) SI_UNIT ( .MILLI., .METRE. ) )">
-<ellipse fill="none" stroke="black" cx="3958.11" cy="-423" rx="150.27" ry="18"/>
-<text text-anchor="middle" x="3958.11" y="-419.3" font-family="Times,serif" font-size="14.00">unsupported&#45;constraint(2839)</text>
+<ellipse fill="none" stroke="black" cx="3958.11" cy="-423" rx="111.58" ry="18"/>
+<text text-anchor="middle" x="3958.11" y="-419.3" font-family="Times,serif" font-size="14.00">LENGTH_UNIT(2839)</text>
 </a>
 </g>
 </g>
 <!-- 2445&#45;&gt;2839 -->
 <g id="edge1124" class="edge">
 <title>2445&#45;&gt;2839</title>
-<path fill="none" stroke="black" d="M2690.03,-419.12C2776.02,-426.71 2895.73,-436.07 3001.15,-440 3309.44,-451.5 3386.94,-450 3695.28,-440 3736.5,-438.66 3781.32,-436.15 3822.02,-433.45"/>
-<polygon fill="black" stroke="black" points="3822.26,-436.94 3832.01,-432.78 3821.79,-429.96 3822.26,-436.94"/>
+<path fill="none" stroke="black" d="M2725.38,-422.17C2807.08,-429.06 2909.51,-436.58 3001.15,-440 3309.44,-451.5 3386.94,-450 3695.28,-440 3745.34,-438.38 3800.68,-435.01 3847.55,-431.7"/>
+<polygon fill="black" stroke="black" points="3848,-435.18 3857.72,-430.98 3847.5,-428.2 3848,-435.18"/>
 </g>
 <!-- 2457 -->
 <g id="node1538" class="node">
 <title>2457</title>
 <g id="a_node1538"><a xlink:title="#2457 =( NAMED_UNIT ( * ) SI_UNIT ( $, .STERADIAN. ) SOLID_ANGLE_UNIT ( ) )">
-<ellipse fill="none" stroke="black" cx="3348.22" cy="-343" rx="150.27" ry="18"/>
-<text text-anchor="middle" x="3348.22" y="-339.3" font-family="Times,serif" font-size="14.00">unsupported&#45;constraint(2457)</text>
+<ellipse fill="none" stroke="black" cx="3348.22" cy="-343" rx="107.78" ry="18"/>
+<text text-anchor="middle" x="3348.22" y="-339.3" font-family="Times,serif" font-size="14.00">NAMED_UNIT(2457)</text>
 </a>
 </g>
 </g>
 <!-- 2445&#45;&gt;2457 -->
 <g id="edge1126" class="edge">
 <title>2445&#45;&gt;2457</title>
-<path fill="none" stroke="black" d="M2695.62,-397.7C2837.1,-385.82 3068.84,-366.37 3214.45,-354.15"/>
-<polygon fill="black" stroke="black" points="3215.11,-357.6 3224.78,-353.28 3214.52,-350.63 3215.11,-357.6"/>
+<path fill="none" stroke="black" d="M2734.78,-394.41C2887.08,-381.63 3110.74,-362.85 3241.42,-351.88"/>
+<polygon fill="black" stroke="black" points="3241.77,-355.36 3251.44,-351.04 3241.18,-348.39 3241.77,-355.36"/>
 </g>
 <!-- 714 -->
 <g id="node574" class="node">
@@ -12292,8 +12292,8 @@
 <g id="node667" class="node">
 <title>841</title>
 <g id="a_node667"><a xlink:title="#841 =( NAMED_UNIT ( * ) PLANE_ANGLE_UNIT ( ) SI_UNIT ( $, .RADIAN. ) )">
-<ellipse fill="none" stroke="black" cx="3958.11" cy="-46464" rx="144.07" ry="18"/>
-<text text-anchor="middle" x="3958.11" y="-46460.3" font-family="Times,serif" font-size="14.00">unsupported&#45;constraint(841)</text>
+<ellipse fill="none" stroke="black" cx="3958.11" cy="-46464" rx="102.08" ry="18"/>
+<text text-anchor="middle" x="3958.11" y="-46460.3" font-family="Times,serif" font-size="14.00">NAMED_UNIT(841)</text>
 </a>
 </g>
 </g>
@@ -13477,8 +13477,8 @@
 <g id="node733" class="node">
 <title>937</title>
 <g id="a_node733"><a xlink:title="#937 =( NAMED_UNIT ( * ) SI_UNIT ( $, .STERADIAN. ) SOLID_ANGLE_UNIT ( ) )">
-<ellipse fill="none" stroke="black" cx="1887.94" cy="-213" rx="144.07" ry="18"/>
-<text text-anchor="middle" x="1887.94" y="-209.3" font-family="Times,serif" font-size="14.00">unsupported&#45;constraint(937)</text>
+<ellipse fill="none" stroke="black" cx="1887.94" cy="-213" rx="102.08" ry="18"/>
+<text text-anchor="middle" x="1887.94" y="-209.3" font-family="Times,serif" font-size="14.00">NAMED_UNIT(937)</text>
 </a>
 </g>
 </g>
@@ -14058,8 +14058,8 @@
 <!-- 997&#45;&gt;1179 -->
 <g id="edge463" class="edge">
 <title>997&#45;&gt;1179</title>
-<path fill="none" stroke="black" d="M2784.01,-33857.93C2843.22,-33853.24 2907.22,-33845.05 2965.15,-33831 3094.52,-33799.63 3236.76,-33730.38 3305.48,-33694.51"/>
-<polygon fill="black" stroke="black" points="3307.45,-33697.43 3314.68,-33689.68 3304.19,-33691.23 3307.45,-33697.43"/>
+<path fill="none" stroke="black" d="M2784.01,-33857.93C2843.22,-33853.24 2907.22,-33845.05 2965.15,-33831 3094.85,-33799.55 3237.5,-33730.02 3306.01,-33694.24"/>
+<polygon fill="black" stroke="black" points="3307.95,-33697.17 3315.17,-33689.42 3304.69,-33690.97 3307.95,-33697.17"/>
 </g>
 <!-- 1004 -->
 <g id="node773" class="node">
@@ -21055,16 +21055,16 @@
 <g id="node1116" class="node">
 <title>1549</title>
 <g id="a_node1116"><a xlink:title="#1549 =( GEOMETRIC_REPRESENTATION_CONTEXT ( 3 ) GLOBAL_UNCERTAINTY_ASSIGNED_CONTEXT ( ( #1706 ) ) GLOBAL_UNIT_ASSIGNED_CONTEXT ( ( #4883, #2933, #937 ) ) REPRESENTATION_CONTEXT ( &#39;NONE&#39;, &#39;WORKASPACE&#39; ) )">
-<ellipse fill="none" stroke="black" cx="1209.8" cy="-213" rx="150.27" ry="18"/>
-<text text-anchor="middle" x="1209.8" y="-209.3" font-family="Times,serif" font-size="14.00">unsupported&#45;constraint(1549)</text>
+<ellipse fill="none" stroke="black" cx="1209.8" cy="-213" rx="247.76" ry="18"/>
+<text text-anchor="middle" x="1209.8" y="-209.3" font-family="Times,serif" font-size="14.00">GEOMETRIC_REPRESENTATION_CONTEXT(1549)</text>
 </a>
 </g>
 </g>
 <!-- 1549&#45;&gt;937 -->
 <g id="edge718" class="edge">
 <title>1549&#45;&gt;937</title>
-<path fill="none" stroke="black" d="M1360.02,-213C1470.91,-213 1621.72,-213 1733.58,-213"/>
-<polygon fill="black" stroke="black" points="1733.6,-216.5 1743.6,-213 1733.6,-209.5 1733.6,-216.5"/>
+<path fill="none" stroke="black" d="M1457.77,-213C1566.81,-213 1689.52,-213 1775.71,-213"/>
+<polygon fill="black" stroke="black" points="1775.77,-216.5 1785.77,-213 1775.77,-209.5 1775.77,-216.5"/>
 </g>
 <!-- 1706 -->
 <g id="node1117" class="node">
@@ -21078,44 +21078,44 @@
 <!-- 1549&#45;&gt;1706 -->
 <g id="edge715" class="edge">
 <title>1549&#45;&gt;1706</title>
-<path fill="none" stroke="black" d="M1284.64,-197.38C1368.81,-179.8 1510.61,-150.84 1633.16,-129 1677.77,-121.05 1726.94,-113.11 1770.02,-106.43"/>
+<path fill="none" stroke="black" d="M1291.58,-195.93C1376.46,-178.24 1513.92,-150.25 1633.16,-129 1677.77,-121.05 1726.94,-113.11 1770.02,-106.43"/>
 <polygon fill="black" stroke="black" points="1770.62,-109.88 1779.97,-104.89 1769.55,-102.96 1770.62,-109.88"/>
 </g>
 <!-- 4883 -->
 <g id="node1118" class="node">
 <title>4883</title>
 <g id="a_node1118"><a xlink:title="#4883 =( LENGTH_UNIT ( ) NAMED_UNIT ( * ) SI_UNIT ( .MILLI., .METRE. ) )">
-<ellipse fill="none" stroke="black" cx="2571.93" cy="-118" rx="150.27" ry="18"/>
-<text text-anchor="middle" x="2571.93" y="-114.3" font-family="Times,serif" font-size="14.00">unsupported&#45;constraint(4883)</text>
+<ellipse fill="none" stroke="black" cx="2571.93" cy="-118" rx="111.58" ry="18"/>
+<text text-anchor="middle" x="2571.93" y="-114.3" font-family="Times,serif" font-size="14.00">LENGTH_UNIT(4883)</text>
 </a>
 </g>
 </g>
 <!-- 1549&#45;&gt;4883 -->
 <g id="edge716" class="edge">
 <title>1549&#45;&gt;4883</title>
-<path fill="none" stroke="black" d="M1334.59,-202.94C1418.76,-196.19 1532.66,-187.25 1633.16,-180 1915.01,-159.67 2244.7,-138.47 2428.51,-126.88"/>
-<polygon fill="black" stroke="black" points="2428.74,-130.38 2438.5,-126.25 2428.3,-123.39 2428.74,-130.38"/>
+<path fill="none" stroke="black" d="M1376,-199.63C1453.98,-193.44 1548.34,-186.12 1633.16,-180 1930.29,-158.57 2280.6,-136.17 2457.09,-125.09"/>
+<polygon fill="black" stroke="black" points="2457.41,-128.57 2467.17,-124.45 2456.98,-121.59 2457.41,-128.57"/>
 </g>
 <!-- 2933 -->
 <g id="node1119" class="node">
 <title>2933</title>
 <g id="a_node1119"><a xlink:title="#2933 =( NAMED_UNIT ( * ) PLANE_ANGLE_UNIT ( ) SI_UNIT ( $, .RADIAN. ) )">
-<ellipse fill="none" stroke="black" cx="1887.94" cy="-278" rx="150.27" ry="18"/>
-<text text-anchor="middle" x="1887.94" y="-274.3" font-family="Times,serif" font-size="14.00">unsupported&#45;constraint(2933)</text>
+<ellipse fill="none" stroke="black" cx="1887.94" cy="-278" rx="107.78" ry="18"/>
+<text text-anchor="middle" x="1887.94" y="-274.3" font-family="Times,serif" font-size="14.00">NAMED_UNIT(2933)</text>
 </a>
 </g>
 </g>
 <!-- 1549&#45;&gt;2933 -->
 <g id="edge717" class="edge">
 <title>1549&#45;&gt;2933</title>
-<path fill="none" stroke="black" d="M1327.41,-224.21C1448.03,-235.81 1635.79,-253.86 1760.05,-265.8"/>
-<polygon fill="black" stroke="black" points="1760.09,-269.32 1770.38,-266.79 1760.76,-262.35 1760.09,-269.32"/>
+<path fill="none" stroke="black" d="M1360.02,-227.34C1488.56,-239.7 1670.73,-257.21 1783.72,-268.08"/>
+<polygon fill="black" stroke="black" points="1783.47,-271.57 1793.76,-269.04 1784.14,-264.6 1783.47,-271.57"/>
 </g>
 <!-- 1706&#45;&gt;4883 -->
 <g id="edge775" class="edge">
 <title>1706&#45;&gt;4883</title>
-<path fill="none" stroke="black" d="M2088.49,-97.49C2194.42,-101.99 2322.48,-107.44 2420.03,-111.58"/>
-<polygon fill="black" stroke="black" points="2420.13,-115.09 2430.27,-112.02 2420.43,-108.1 2420.13,-115.09"/>
+<path fill="none" stroke="black" d="M2088.49,-97.49C2207.07,-102.53 2353.38,-108.75 2453.58,-113.01"/>
+<polygon fill="black" stroke="black" points="2453.6,-116.51 2463.74,-113.44 2453.9,-109.52 2453.6,-116.51"/>
 </g>
 <!-- 1551 -->
 <g id="node1120" class="node">
@@ -26644,8 +26644,8 @@
 <g id="node1529" class="node">
 <title>2406</title>
 <g id="a_node1529"><a xlink:title="#2406 =( NAMED_UNIT ( * ) SI_UNIT ( $, .STERADIAN. ) SOLID_ANGLE_UNIT ( ) )">
-<ellipse fill="none" stroke="black" cx="3958.11" cy="-46653" rx="150.27" ry="18"/>
-<text text-anchor="middle" x="3958.11" y="-46649.3" font-family="Times,serif" font-size="14.00">unsupported&#45;constraint(2406)</text>
+<ellipse fill="none" stroke="black" cx="3958.11" cy="-46653" rx="107.78" ry="18"/>
+<text text-anchor="middle" x="3958.11" y="-46649.3" font-family="Times,serif" font-size="14.00">NAMED_UNIT(2406)</text>
 </a>
 </g>
 </g>
@@ -26688,8 +26688,8 @@
 <!-- 2440&#45;&gt;427 -->
 <g id="edge1120" class="edge">
 <title>2440&#45;&gt;427</title>
-<path fill="none" stroke="black" d="M2667.1,-46656.51C2817.3,-46684.45 3109.19,-46738.73 3256.92,-46766.21"/>
-<polygon fill="black" stroke="black" points="3256.4,-46769.67 3266.87,-46768.06 3257.68,-46762.79 3256.4,-46769.67"/>
+<path fill="none" stroke="black" d="M2667.1,-46656.51C2814.05,-46683.84 3096.63,-46736.4 3247.13,-46764.39"/>
+<polygon fill="black" stroke="black" points="3246.82,-46767.89 3257.29,-46766.28 3248.1,-46761.01 3246.82,-46767.89"/>
 </g>
 <!-- 2440&#45;&gt;4463 -->
 <g id="edge1119" class="edge">
@@ -26706,8 +26706,8 @@
 <!-- 3632&#45;&gt;2839 -->
 <g id="edge1652" class="edge">
 <title>3632&#45;&gt;2839</title>
-<path fill="none" stroke="black" d="M3565.25,-413.33C3642.99,-415.25 3729.11,-417.37 3800.78,-419.14"/>
-<polygon fill="black" stroke="black" points="3800.71,-422.64 3810.8,-419.39 3800.89,-415.64 3800.71,-422.64"/>
+<path fill="none" stroke="black" d="M3565.25,-413.33C3656.7,-415.59 3759.76,-418.13 3837.24,-420.04"/>
+<polygon fill="black" stroke="black" points="3837.43,-423.55 3847.51,-420.3 3837.6,-416.55 3837.43,-423.55"/>
 </g>
 <!-- 3389&#45;&gt;1934 -->
 <g id="edge1557" class="edge">
@@ -27319,34 +27319,34 @@
 <g id="node1593" class="node">
 <title>2605</title>
 <g id="a_node1593"><a xlink:title="#2605 =( GEOMETRIC_REPRESENTATION_CONTEXT ( 3 ) GLOBAL_UNCERTAINTY_ASSIGNED_CONTEXT ( ( #344 ) ) GLOBAL_UNIT_ASSIGNED_CONTEXT ( ( #4356, #841, #2406 ) ) REPRESENTATION_CONTEXT ( &#39;NONE&#39;, &#39;WORKASPACE&#39; ) )">
-<ellipse fill="none" stroke="black" cx="3348.22" cy="-46526" rx="150.27" ry="18"/>
-<text text-anchor="middle" x="3348.22" y="-46522.3" font-family="Times,serif" font-size="14.00">unsupported&#45;constraint(2605)</text>
+<ellipse fill="none" stroke="black" cx="3348.22" cy="-46526" rx="247.76" ry="18"/>
+<text text-anchor="middle" x="3348.22" y="-46522.3" font-family="Times,serif" font-size="14.00">GEOMETRIC_REPRESENTATION_CONTEXT(2605)</text>
 </a>
 </g>
 </g>
 <!-- 2605&#45;&gt;344 -->
 <g id="edge1197" class="edge">
 <title>2605&#45;&gt;344</title>
-<path fill="none" stroke="black" d="M3463.2,-46537.63C3561.03,-46547.6 3702.69,-46562.05 3809.24,-46572.92"/>
-<polygon fill="black" stroke="black" points="3809.13,-46576.43 3819.44,-46573.96 3809.84,-46569.46 3809.13,-46576.43"/>
+<path fill="none" stroke="black" d="M3492.89,-46540.65C3588.26,-46550.38 3713.1,-46563.11 3809.3,-46572.92"/>
+<polygon fill="black" stroke="black" points="3809.09,-46576.42 3819.4,-46573.95 3809.8,-46569.46 3809.09,-46576.42"/>
 </g>
 <!-- 2605&#45;&gt;4356 -->
 <g id="edge1198" class="edge">
 <title>2605&#45;&gt;4356</title>
-<path fill="none" stroke="black" d="M3494.09,-46530.35C3701.45,-46536.57 4081.28,-46547.97 4293.97,-46554.36"/>
-<polygon fill="black" stroke="black" points="4293.87,-46557.85 4303.97,-46554.66 4294.08,-46550.86 4293.87,-46557.85"/>
+<path fill="none" stroke="black" d="M3577.37,-46532.85C3806.28,-46539.72 4149.92,-46550.03 4329.6,-46555.42"/>
+<polygon fill="black" stroke="black" points="4329.52,-46558.92 4339.62,-46555.73 4329.73,-46551.93 4329.52,-46558.92"/>
 </g>
 <!-- 2605&#45;&gt;841 -->
 <g id="edge1199" class="edge">
 <title>2605&#45;&gt;841</title>
-<path fill="none" stroke="black" d="M3463.2,-46514.37C3569.47,-46503.54 3727.44,-46487.42 3835.96,-46476.36"/>
-<polygon fill="black" stroke="black" points="3836.38,-46479.83 3845.97,-46475.34 3835.67,-46472.87 3836.38,-46479.83"/>
+<path fill="none" stroke="black" d="M3492.89,-46511.35C3605.92,-46499.82 3760.35,-46484.07 3859.43,-46473.96"/>
+<polygon fill="black" stroke="black" points="3859.84,-46477.44 3869.43,-46472.94 3859.13,-46470.48 3859.84,-46477.44"/>
 </g>
 <!-- 2605&#45;&gt;2406 -->
 <g id="edge1200" class="edge">
 <title>2605&#45;&gt;2406</title>
-<path fill="none" stroke="black" d="M3407.7,-46542.54C3482.31,-46563.17 3615.55,-46598.47 3731.28,-46621 3766.75,-46627.9 3805.62,-46633.95 3840.97,-46638.87"/>
-<polygon fill="black" stroke="black" points="3840.94,-46642.4 3851.33,-46640.3 3841.9,-46635.47 3840.94,-46642.4"/>
+<path fill="none" stroke="black" d="M3410.98,-46543.44C3486.17,-46564.19 3617.23,-46598.8 3731.28,-46621 3773.03,-46629.13 3819.49,-46636.06 3859.37,-46641.38"/>
+<polygon fill="black" stroke="black" points="3858.99,-46644.86 3869.36,-46642.7 3859.91,-46637.92 3858.99,-46644.86"/>
 </g>
 <!-- 3053&#45;&gt;769 -->
 <g id="edge1434" class="edge">
@@ -31932,8 +31932,8 @@
 <!-- 3743&#45;&gt;1549 -->
 <g id="edge1703" class="edge">
 <title>3743&#45;&gt;1549</title>
-<path fill="none" stroke="black" d="M589.85,-262.39C739.63,-250.44 942.31,-234.26 1074.28,-223.73"/>
-<polygon fill="black" stroke="black" points="1074.76,-227.21 1084.45,-222.92 1074.2,-220.23 1074.76,-227.21"/>
+<path fill="none" stroke="black" d="M589.85,-262.39C724.5,-251.65 901.88,-237.49 1032.23,-227.09"/>
+<polygon fill="black" stroke="black" points="1032.63,-230.57 1042.32,-226.28 1032.07,-223.59 1032.63,-230.57"/>
 </g>
 <!-- 3743&#45;&gt;1960 -->
 <g id="edge1702" class="edge">
@@ -32103,8 +32103,8 @@
 <!-- 3821&#45;&gt;2605 -->
 <g id="edge1739" class="edge">
 <title>3821&#45;&gt;2605</title>
-<path fill="none" stroke="black" d="M2910.9,-46375.15C2929.77,-46381.54 2948.01,-46389.4 2965.15,-46399 2988.72,-46412.21 2978.53,-46433.2 3001.15,-46448 3060.83,-46487.05 3137.33,-46506.73 3203.22,-46516.58"/>
-<polygon fill="black" stroke="black" points="3202.89,-46520.07 3213.28,-46518.02 3203.88,-46513.14 3202.89,-46520.07"/>
+<path fill="none" stroke="black" d="M2910.9,-46375.15C2929.77,-46381.54 2948.01,-46389.4 2965.15,-46399 2988.72,-46412.21 2978.53,-46433.2 3001.15,-46448 3050.96,-46480.6 3112.49,-46499.7 3169.79,-46510.85"/>
+<polygon fill="black" stroke="black" points="3169.22,-46514.3 3179.69,-46512.7 3170.51,-46507.42 3169.22,-46514.3"/>
 </g>
 <!-- 4127&#45;&gt;3862 -->
 <g id="edge1881" class="edge">
