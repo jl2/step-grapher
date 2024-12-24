@@ -16,8 +16,9 @@
 (in-package :step-grapher)
 
 (defparameter *step-file-dirs* (list
-                               (asdf:system-relative-pathname :step-grapher "step-files/")
-                               "~/data/3d-models/step-files/")
+                                (asdf:system-relative-pathname :step-grapher "step-files/")
+                                (asdf:system-relative-pathname :step-grapher "step-files/nist/")
+                                "~/data/3d-models/step-files/")
   "Directories in which to look for STEP files.  Used to search if a full path is not used.")
 
 (defun find-step-file (fname)

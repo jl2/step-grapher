@@ -17,6 +17,6 @@ manifest.txt
 *.svg
 *.pdf
 
-step-files
+
 !step-files/as1.stp
 !step-files/test1.stp
