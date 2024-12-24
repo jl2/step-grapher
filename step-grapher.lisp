@@ -58,8 +58,12 @@ This function is a hack, and needs to be improved."
               ;; TODO: What if = is in a string? or occurs multiple times?
               (subseq step-statement (1+ (search "=" step-statement)))
               step-statement)))
-    (cond ((char= (aref right-hand-side 0) #\()
+    (cond ((and (char= (aref right-hand-side 0) #\()
+                (not 
+                     (alpha-char-p (aref right-hand-side 1))))
            "unsupported-constraint")
+          ((char= (aref right-hand-side 0) #\()
+           (symbol-name (read-from-string (subseq right-hand-side 1))))
           (t
            (symbol-name (read-from-string right-hand-side))))))
 
