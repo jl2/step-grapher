@@ -58,14 +58,16 @@ This function is a hack, and needs to be improved."
               ;; TODO: What if = is in a string? or occurs multiple times?
               (subseq step-statement (1+ (search "=" step-statement)))
               step-statement)))
-    (cond ((and (char= (aref right-hand-side 0) #\()
-                (not 
-                     (alpha-char-p (aref right-hand-side 1))))
-           "unsupported-constraint")
-          ((char= (aref right-hand-side 0) #\()
-           (symbol-name (read-from-string (subseq right-hand-side 1))))
-          (t
-           (symbol-name (read-from-string right-hand-side))))))
+    (with-input-from-string (ins right-hand-side)
+      (cond ((and (char= (peek-char t ins nil nil) #\()
+                  (read-char ins nil nil)
+                  (when (alpha-char-p (peek-char t ins nil nil))
+                    (symbol-name (read ins nil nil))))
+             )
+            ((char= (peek-char t ins nil nil) #\()
+             "unsupported-constraint")
+            (t
+             (symbol-name (read ins)))))))
 
 (defun parse-simple-entity (step-statement)
   "Create a step-entity from a step-statement of the form \"#123 = some_thing(..., #4, #45, #23, ...);\""
