@@ -16,17 +16,18 @@ First, clone the repo into you QuickLisp "local projects" directory, then load t
 #+RESULTS:
 : T
 
-Next call `sg:graph-step-file`:
+Next call `sg:graph-step-file` using one of the included demo files:
 
 #+begin_src lisp
-  (sg:graph-step-file "as1.stp" :skip-list nil")
+  (sg:graph-step-file "as1.stp" :skip-list nil)
 #+end_src
 
 
+The output should be something like this:
 
 [[step-files/as1.svg]]
 
-`sg:graph-step-file` can take a full to a STEP file, or a name relative to one of the directories listed in sg::*step-file-dirs*, which defaults to the `step-file` directory in the package.
+`sg:graph-step-file` can take a full path to a STEP file, or a name relative to one of the directories listed in sg::*step-file-dirs*, which defaults to the `step-files` directory in the package.
 
 By default several entity types are not shown in the graph, to avoid clutterin the output.  Use the :skip-list keyword parameter to control which entities are culled.  Use nil to show all entities. 
 
