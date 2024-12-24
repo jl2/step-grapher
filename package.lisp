@@ -20,8 +20,9 @@
   (:use #:cl #:alexandria)
   (:export #:main
            #:find-step-file
+           #:*step-file-dirs*
+
            #:read-step-file
            #:graph-step-file
            #:read-step-statement
-           #:read-entity-type
-           #:collect-references))
+           #:read-entity-type))
