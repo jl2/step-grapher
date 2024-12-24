@@ -21,8 +21,10 @@ Next call `sg:graph-step-file`:
 #+begin_src lisp
   (sg:graph-step-file "as1.stp" :skip-list nil")
 #+end_src
-[[
-step-files/as1.svg]]
+
+
+
+[[step-files/as1.svg]]
 
 `sg:graph-step-file` can take a full to a STEP file, or a name relative to one of the directories listed in sg::*step-file-dirs*, which defaults to the `step-file` directory in the package.
 
