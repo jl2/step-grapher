@@ -16,8 +16,6 @@
 (in-package :step-grapher)
 
 (defun main (args)
-  (format t "Hello! This tool is REPL only for now.~%")
-  (format t "Args: ~{~a~^ ~}~%" args)
   (handler-case
       (let* ((parser (cl-argparse:create-main-parser
                          (main-parser "Display the structure of a STEP file as a Directed Acyclic Graph using GraphViz." "step-grapher")
