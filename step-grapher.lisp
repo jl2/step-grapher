@@ -49,9 +49,10 @@
     (subseq string (count-leading-whitespace))))
 
 (defun read-entity-type (step-statement)
-  "Try to find the entity type of step-statement.~
-In the form \"#1 = CARTESIAN_POINT(...);\"~ the entity type is \"CARTESIAN_POINT\".~
-Statements of the form\"#1 = (...)\" are not supported, and the type \"unsupported-constraint\" is returned.~
+  "Try to find the entity type of step-statement. ~
+In the form \"#1 = CARTESIAN_POINT(...);\"~ the entity type is \"CARTESIAN_POINT\". ~
+Statements of the form\"#1 = (...)\" try to use the first entity in the parenthesis as their type. ~
+More complicated nested statements are not supported, and return the type \"unsupported-entity\" is returned. ~
 This function is a hack, and needs to be improved."
   (let ((right-hand-side
           (if (find #\= step-statement)
@@ -116,7 +117,8 @@ This function is a hack, and needs to be improved."
      (parse-simple-entity step-statement))
 
     ;; A real parser would parse other things, like headers,
-    ;; but this tool doesn't use that data, so , so create a dummy node
+    ;; but this tool doesn't use that data, so it packages it up into a dummy node with only the text
+    ;; and a guess at the entity type.
     (t
      (make-instance 'step-entity
                     :id 0
@@ -125,7 +127,7 @@ This function is a hack, and needs to be improved."
                     :text step-statement))))
 
 (defun read-step-statement (stream)
-  "Read the next statement from stream and try to parse it into a step-entity.~
+  "Read the next statement from stream and try to parse it into a step-entity. ~
 Return nil at end of file."
   (let ((chars
           (loop
@@ -182,6 +184,7 @@ Return nil at end of file."
     (format stream "(step-entity ~a ~a)" id entity-type)))
 
 (defun read-step-file (fname)
+  "Read a step file into a list  of entities.  The list will include *all* entities, even header and data entries."
   (with-input-from-file (ins (find-step-file fname))
     (loop :for statement = (read-step-statement ins)
           :while statement
@@ -218,9 +221,9 @@ Return nil at end of file."
                                        "VERTEX_POINT"
                                        ;; "EDGE_LOOP"
                                        )))
-  "Create (and optionally display) a graph of the STEP file named by step-file-name.~
+  "Create (and optionally display) a graph of the STEP file named by step-file-name. ~
 Entity types listed in skip-list will not be represented in the output graph. ~
-graph-cmd, spline-type, node-sep control a few Dot parameters and how Dot is invoked.~
+graph-cmd, spline-type, node-sep control a few Dot parameters and how Dot is invoked. ~
 output-type, dot-file-name, and out-file-name control the Dot output.  Default is SVG, ~
 using the same name as the STEP file, but with .svg and .dot extensions. ~
 If open-file is t, the out-file-name graph image will be opened in a sensible viewer. ~
@@ -230,12 +233,15 @@ If open-file is a string, it should be the name of a program to open out-file-na
     ;; Generate the .dot file
     (with-output-to-file (dots dot-file-name)
       (format dots
+              ;; TODO: Allow more customization here
               "digraph ~s { rankdir=\"LR\"~%nodesep=~a~%overlap=false~%splines=~a~%"
               (namestring step-pathname)
               node-sep
               spline-type)
+
       (with-input-from-file (ins step-pathname)
         (let ((step-table (make-hash-table)))
+
           ;; First build up a table of ID -> step-entity
           (loop :for entity = (read-step-statement ins)
                 :while entity
@@ -244,6 +250,7 @@ If open-file is a string, it should be the name of a program to open out-file-na
                            (not (zerop this-id)))
                   :do
                      (setf (gethash this-id step-table) entity))
+
           ;; Next, write the dot file by iterating over the hashtable
           ;; and writing node labels followed by edges to its references,
           ;; ID0 -> ID1; ID0 -> ID2; ID0 -> #ID3; ...
@@ -279,13 +286,16 @@ If open-file is a string, it should be the name of a program to open out-file-na
                      (namestring out-file-name)
                      (namestring dot-file-name))))
     (format t "Running: ~s~%" cmd)
-    (if wait-for-dot
+    ;; Run dot in the background unless we have to wait for it to finish -
+    ;; either to open the file it creates, or delete the .dot file
+    (if (or wait-for-dot (not keep-dot))
         (uiop:run-program cmd :output t :error-output t :force-shell t)
         (uiop:launch-program cmd :output t :error-output t :force-shell t))
 
     (when (not keep-dot)
       (delete-file dot-file-name))
 
+    ;; Check if and how to open the graph image
     (cond ((stringp open-file)
            (uiop:launch-program (format nil "~a ~s &" open-file (namestring out-file-name))))
           (open-file
