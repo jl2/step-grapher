@@ -22,18 +22,22 @@
   "Directories in which to look for STEP files.  Used to search if a full path is not used.")
 
 (defun find-step-file (fname)
-  "Search for a  file name (like \"vice.stp\" in th *step-file-dires*"
+  "Search for a  file name (like \"vice.stp\" in th *step-file-dirs*"
   (ctypecase fname
+    ;; If a string is given, search for the file.
     (string
-     (let ((path (probe-file fname)))
-       (if path
-           path
-           (loop
-             :for path :in *step-file-dirs*
-             :do
-                (when-let (the-file (probe-file (merge-pathnames fname path)))
-                  (return the-file))
-             :finally (error "Could not find ~a" fname)))))
+     ;; First probe for it to see if it's an absolute path,
+     ;; or a relative path that exists in the current directory
+     (if-let ((path (probe-file fname)))
+       path
+       ;; It wasn't, so search *step-file-dirs* for it.
+       (loop
+         :for path :in *step-file-dirs*
+         :do
+            (when-let (the-file (probe-file (merge-pathnames fname path)))
+              (return the-file))
+         :finally (error "Could not find ~a" fname))))
+    ;; If a pathname was given, just probe it to make sure it exists
     (pathname
      (probe-file fname))))
 
