@@ -135,14 +135,17 @@ Return nil at end of file."
             :for nc = (peek-char t stream nil nil nil)
               :then (peek-char nil stream nil nil nil)
             :while nc
+            :for in-string = nil :then (if (char= nc #\') (not in-string) in-string)
+
             :for is-whitespace = (whitespace-p nc)
-            :until (char= nc #\;)
+            :until (and (not in-string) (char= nc #\;))
             :when (and is-whitespace
+                       (not in-string)
                        (not previous-was-whitespace))
               :collect #\space
             :when is-whitespace
               :do (read-char stream nil nil)
-            :when (not is-whitespace)
+            :when (or in-string (not is-whitespace))
               :collect (read-char stream nil nil)))
         (semi-colon (read-char stream nil nil)))
     (declare (ignorable semi-colon))
