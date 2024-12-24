@@ -144,7 +144,7 @@ Return nil at end of file."
                        (not in-string)
                        (not previous-was-whitespace))
               :collect #\space
-            :when is-whitespace
+            :when (and (not in-string)  is-whitespace)
               :do (read-char stream nil nil)
             :when (or in-string (not is-whitespace))
               :collect (read-char stream nil nil)))
