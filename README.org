@@ -19,13 +19,13 @@ First, clone the repo into you QuickLisp "local projects" directory, then load t
 Next call `sg:graph-step-file` using one of the included demo files:
 
 #+begin_src lisp
-  (sg:graph-step-file "as1.stp" :skip-list nil)
+  (sg:graph-step-file "freecad_fillet_extrude.stp" :skip-list nil)
 #+end_src
 
 
 The output should be something like this:
 
-[[step-files/as1.svg]]
+[[step-files/freecad_fillet_extrude.svg]]
 
 `sg:graph-step-file` can take a full path to a STEP file, or a name relative to one of the directories listed in sg::*step-file-dirs*, which defaults to the `step-files` directory in the package.
 
@@ -49,7 +49,11 @@ First clone the repo and build using Make.  See `step-grapher --help` to see ava
 
 By default several terminal entities are skipped to avoid cluttering the graph.  Use the --no-skip command line option to disable skipping them
 
-** Another Example Graph
+** Example Graphs
+
+
+[[step-files/as1.svg]]
+
 [[step-files/test1.svg]]
 
 
