@@ -205,6 +205,7 @@ Return nil at end of file."
                           (out-file-name (merge-pathnames (make-pathname :type output-type)
                                                           (find-step-file step-file-name)))
                           (open-file t)
+                          (keep-dot nil)
                           (node-sep 0.4)
                           (spline-type "true")
                           (graph-cmd "dot")
@@ -281,7 +282,10 @@ If open-file is a string, it should be the name of a program to open out-file-na
     (if wait-for-dot
         (uiop:run-program cmd :output t :error-output t :force-shell t)
         (uiop:launch-program cmd :output t :error-output t :force-shell t))
-    
+
+    (when (not keep-dot)
+      (delete-file dot-file-name))
+
     (cond ((stringp open-file)
            (uiop:launch-program (format nil "~a ~s &" open-file (namestring out-file-name))))
           (open-file
