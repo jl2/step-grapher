@@ -56,16 +56,15 @@ Statements of the form\"#1 = (...)\" try to use the first entity in the parenthe
 More complicated nested statements are not supported, and return the type \"unsupported-entity\" is returned. ~
 This function is a hack, and needs to be improved."
   (let ((right-hand-side
-          (if (find #\= step-statement)
+          (if-let (eq-offset (search "=" step-statement))
               ;; TODO: What if = is in a string? or occurs multiple times?
-              (subseq step-statement (1+ (search "=" step-statement)))
+              (subseq step-statement (1+ eq-offset))
               step-statement)))
     (with-input-from-string (ins right-hand-side)
       (cond ((and (char= (peek-char t ins nil nil) #\()
                   (read-char ins nil nil)
-                  (when (alpha-char-p (peek-char t ins nil nil))
-                    (symbol-name (read ins nil nil))))
-             )
+                  (alpha-char-p (peek-char t ins nil nil)))
+             (symbol-name (read ins nil nil)))
             ((char= (peek-char t ins nil nil) #\()
              "unsupported-constraint")
             (t
