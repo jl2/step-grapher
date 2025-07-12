@@ -12,7 +12,7 @@ manifest.txt
 *.cls
 *.abcl-tmp
 
-*.stp
+
 *.dot
 *.svg
 *.pdf
