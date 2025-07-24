@@ -23,6 +23,38 @@
            #:*step-file-dirs*
 
            #:read-step-file
+           
            #:graph-step-file
+
+
+           #:step-file
+           #:step-statement
+           #:step-header
+           #:header
+           #:entity-map
+           #:entity-type-map
+           #:comes-from
+           #:statements
+
+           #:step-entity
+           #:id
+           #:index
+           #:entity-type
+           #:statement
+           #:statement-at
+           #:references
+           #:entity-id-integer
+
+           #:step-statement
+           #:tokens
+           #:token-count
+           #:token-at
            #:read-step-statement
-           #:read-entity-type))
+
+           #:entity
+           #:entity-name
+           #:entities-of-type
+           #:entity-references
+           #:entities-referenced-by
+           #:compute-related-entities
+           ))

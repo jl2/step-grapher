@@ -25,11 +25,18 @@
                #+abcl #:cl-unicode
                #+ccl #:cl-unicode
                #:cl-argparse
+               #:cl-ppcre
                )
 
   :components ((:file "package")
-               (:file "main")
-               (:file "step-grapher"))
+
+               (:file "utilities")
+               (:file "step-file")
+               (:file "step-header")
+               (:file "step-statement")
+               (:file "step-entity")
+               (:file "step-grapher")
+               (:file "main"))
 
   :in-order-to ((test-op (test-op
                           step-grapher.test))))
