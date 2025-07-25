@@ -84,30 +84,34 @@ direction controls how parent and child entities are included.
       (add-all-refs entity-ids direction radius)
       result-table)))
 
-(defun graph-step-file (step-file-name
+(defun graph-step-file (step-file
                         &key
+                          (step-file-pathname (if (eq (type-of step-file) 'step-file)
+                                                  #p"step-file.stp"
+                                                  (find-step-file step-file)))
                           (entities-of-interest nil)
                           (direction :up-and-down)
                           (radius most-positive-fixnum)
                           (dot-file-name (merge-pathnames (make-pathname
                                                            :name (when entities-of-interest
                                                                    (format nil "~a(~{~a~^_~})"
-                                                                           (pathname-name step-file-name)
+                                                                           (pathname-name step-file-pathname)
                                                                            entities-of-interest))
                                                                          
                                                            :type "dot")
-                                                          (find-step-file step-file-name)))
+                                                          step-file-pathname))
                           (output-type "svg")
                           (out-file-name (merge-pathnames (make-pathname
                                                            :name (when entities-of-interest
                                                                    (format nil "~a(~{~a~^_~})"
-                                                                           (pathname-name step-file-name)
+                                                                           (pathname-name step-file-pathname)
                                                                            entities-of-interest))
                                                            :type output-type)
-                                                          (find-step-file step-file-name)))
+                                                          step-file-pathname))
                           (open-file t)
                           (keep-dot t)
                           (node-sep 0.4)
+                          (rank-sep 2.0)
                           (spline-type "true")
                           (graph-cmd "dot")
                           (wait-for-dot open-file)
@@ -131,8 +135,10 @@ using the same name as the STEP file, but with .svg and .dot extensions. ~
 If open-file is t, the out-file-name graph image will be opened in a sensible viewer. ~
 If open-file is a string, it should be the name of a program to open out-file-name with."
 
-  (let* ((step-pathname (find-step-file step-file-name))
-         (step-file (read-step-file step-pathname))
+  (let* ((step-file (typecase step-file
+                      (step-file step-file)
+                      (t (read-step-file (find-step-file step-file)))))
+         
          (real-entities-of-interest (if entities-of-interest
                                         (compute-related-entities step-file
                                                                   entities-of-interest
@@ -144,8 +150,9 @@ If open-file is a string, it should be the name of a program to open out-file-na
     (with-output-to-file (dots dot-file-name)
       (format dots
               ;; TODO: Allow more customization here
-              "digraph ~s { rankdir=\"LR\"~%nodesep=~a~%overlap=false~%splines=~a~%"
-              (namestring step-pathname)
+              "digraph ~s { rankdir=\"LR\"~%~%ranksep=~a~%nodesep=~a~%overlap=false~%splines=~a~%"
+              (namestring step-file-pathname)
+              rank-sep
               node-sep
               spline-type)
 
@@ -153,14 +160,14 @@ If open-file is a string, it should be the name of a program to open out-file-na
         :for ent-id :being :the :hash-keys :of real-entities-of-interest
         :for entity = (gethash ent-id (entity-map step-file))
         :for should-show = (and
-                            (not (find (entity-type entity) skip-list :test #'string-equal))
+                            (not (find (entity-type entity) skip-list :test #'string=))
                             (gethash ent-id real-entities-of-interest))
         :for ent-type = (entity-type entity)
         :when should-show
           :do
              (format dots
                      "~a [label=\"~a ~a\" tooltip=\"~a\"];~%"
-                     (entity-id-integer ent-id)
+                     ent-id
                      ent-id
                      (elide-text (format nil "~a" (entity-type entity)) 512)
                      (elide-text (format nil "~a" (statement entity)) 512))
@@ -170,14 +177,14 @@ If open-file is a string, it should be the name of a program to open out-file-na
                :for goes-to-type = (entity-type (entity step-file goes-to))
                :for should-show-ref = (and
                                    (gethash goes-to real-entities-of-interest)
-                                   (not (find goes-to-type skip-list :test #'string-equal))
+                                   (not (find goes-to-type skip-list :test #'string=))
                                    )
                :when should-show-ref
                  :do
                     (format dots
                             "~s -> ~s;~%"
-                            (entity-id-integer from)
-                            (entity-id-integer goes-to)
+                            from
+                            goes-to
                             )))
       
       

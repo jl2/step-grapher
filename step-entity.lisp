@@ -68,7 +68,7 @@
 (defun create-entity (statement index)
   (make-instance
    'step-entity
-   :id (token-at statement 0)
+   :id (entity-id-integer (token-at statement 0))
    :index index
    :statement statement
    ;; (skip the '=')
@@ -79,7 +79,7 @@
                             (> (length token) 1) 
                             (char= (aref token 0) #\#)
                             (numeric-p (aref token 1)))
-                       :collect token)))
+                       :collect (entity-id-integer token))))
 
 (defun entity-name (entity)
   (let ((statement (statement entity)))

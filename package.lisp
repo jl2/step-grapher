@@ -28,6 +28,7 @@
 
 
            #:step-file
+           #:summarize
            #:step-statement
            #:step-header
            #:header

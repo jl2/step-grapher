@@ -16,7 +16,13 @@
 (in-package :step-grapher)
 
 (defclass step-file ()
-  ((header
+  ((pathname
+    :accessor step-pathname
+    :type pathname
+    :initarg pathname
+    :documentation "The pathname of the STEP file this object was read from.")
+
+   (header
     :accessor header
     :type step-header
     :initarg :header
@@ -26,19 +32,19 @@
     :accessor entity-map
     :type hashtable
     :initarg :entity-map
-    :initform (make-hash-table :test 'equal)
+    :initform (make-hash-table)
     :documentation "A hashtable mapping entity IDs to corresponding entity-statments.")
 
    (entity-type-map
     :accessor entity-type-map
     :type hashtable
     :initarg :entity-type-map
-    :initform (make-hash-table :test 'equal)
+    :initform (make-hash-table)
     :documentation "A hashtable mapping entity-types to a list of entity IDs of that type.")
 
    (comes-from
     :accessor comes-from
-    :initform (make-hash-table :test 'equal)
+    :initform (make-hash-table)
     :initarg :comes-from
     :type hashtable
     :documentation "A hashtable mapping entity IDs (of the form \"#NNNN\") to a list of entity IDs of ~
@@ -52,8 +58,7 @@ will contain (entity-id entity)")
     :documentation "Original STEP statements as read from the file. step-entities use an index into this vector to get the original statement text.")))
 
 (defmethod cl:print-object ((object step-file) stream)
-  (with-slots (statements) object
-    (format stream "~{~a~^~%~}" (coerce statements 'list))))
+  (format stream "~a" (header object)))
 
 
 (defun entity (step-file entity-id)
@@ -70,6 +75,18 @@ will contain (entity-id entity)")
 
 (defun statement-at (step-file idx)
   (aref (statements step-file) idx))
+
+(defun summarize (step-file
+                  &key
+                    (full t)
+                    )
+  (with-slots (header entity-map entity-type-map comes-from) step-file
+    (format t "Step file has:~%")
+    (format t "  ~a entities~%" (hash-table-count entity-map))
+    (format t "  ~a entity types~%" (hash-table-count entity-type-map))
+    (when full
+      (format t "Top 10 Entity types by popularity:~%~{  ~a~^~%~}~%" (subseq  (sort (hash-table-keys entity-type-map) #'> :key (lambda (key) (length (gethash key entity-type-map))))
+                                                                       0 10)))))
 
 (defparameter *step-file-dirs* (list
                                 (asdf:system-relative-pathname :step-grapher "step-files/")
@@ -108,68 +125,70 @@ will contain (entity-id entity)")
 (defun read-step-file (fname &key (encoding :utf-8))
   "Read a step file into a list of entities.  The list will include *all* entities, even header
  and data entries."
-  (with-input-from-file (ins (find-step-file fname) :external-format encoding)
-    (loop
-      :with header-statements = nil
-      :with entities = (make-hash-table :test 'equal)
-      :with comes-from = (make-hash-table :test 'equal)
-      :with entity-types = (make-hash-table :test 'equal)
-      :with in-header = nil
-      :with in-data = nil
-      :for statement = (read-step-statement ins)
-      :for current-idx :from 0
-      :while statement
-      :collect statement :into all-statements
+  (let ((pname (find-step-file fname)))
+    (with-input-from-file (ins pname :external-format encoding)
+      (loop
+        :with header-statements = nil
+        :with entities = (make-hash-table)
+        :with comes-from = (make-hash-table)
+        :with entity-types = (make-hash-table)
+        :with in-header = nil
+        :with in-data = nil
+        :for statement = (read-step-statement ins)
+        :for current-idx :from 0
+        :while statement
+        :collect statement :into all-statements
 
-      ;; In the HEADER section, collect the statement indices in order to create a step-header.
-      ;; This just allows quick access to those statements later on... they're not looked at too
-      ;; carefully yet...
-      :when (string= "HEADER" (token-at statement 0)) 
-        :do
-           (setf in-header t)
-      :when in-header
-        :do
-           (push statement header-statements)
-      :when (and in-header
-                 (string= "ENDSEC" (token-at statement 0)))
-        :do
-           (setf in-header nil)
+        ;; In the HEADER section, collect the statement indices in order to create a step-header.
+        ;; This just allows quick access to those statements later on... they're not looked at too
+        ;; carefully yet...
+        :when (string= "HEADER" (token-at statement 0)) 
+          :do
+             (setf in-header t)
+        :when in-header
+          :do
+             (push statement header-statements)
+        :when (and in-header
+                   (string= "ENDSEC" (token-at statement 0)))
+          :do
+             (setf in-header nil)
 
-           ;; In the DATA section build up entities and add them to the entities map.
-           ;; These will always have #ID = ...
-      :when (and in-data
-                 (string= "ENDSEC" (token-at statement 0)))
-        :do
-           (setf in-data nil)
+             ;; In the DATA section build up entities and add them to the entities map.
+             ;; These will always have #ID = ...
+        :when (and in-data
+                   (string= "ENDSEC" (token-at statement 0)))
+          :do
+             (setf in-data nil)
 
-      :when (and (not (string= "DATA" (token-at statement 0)))
-                 in-data
-                 (not (zerop (token-count statement))))
-        :do
-           (let* ((entity (create-entity statement current-idx))
-                  (ent-type (entity-type entity))
-                  (ent-id (entity-id entity) ))
-             (setf (gethash ent-id entities) entity)
-             (if (not (null (gethash ent-type entity-types)))
-                      (push ent-id (gethash ent-type entity-types))
-                      (setf (gethash ent-type entity-types) (list ent-id)))
-             (loop
-               :for goes-to-id :in (references entity)
-               :do
-                  (if (not (null (gethash goes-to-id comes-from)))
-                      (push ent-id (gethash goes-to-id comes-from))
-                      (setf (gethash goes-to-id comes-from) (list ent-id)))))
-      :when (string= "DATA" (token-at statement 0))
-        :do
-           (setf in-data t)
+        :when (and (not (string= "DATA" (token-at statement 0)))
+                   in-data
+                   (not (zerop (token-count statement))))
+          :do
+             (let* ((entity (create-entity statement current-idx))
+                    (ent-type (entity-type entity))
+                    (ent-id (entity-id entity) ))
+               (setf (gethash ent-id entities) entity)
+               (if (not (null (gethash ent-type entity-types)))
+                   (push ent-id (gethash ent-type entity-types))
+                   (setf (gethash ent-type entity-types) (list ent-id)))
+               (loop
+                 :for goes-to-id :in (references entity)
+                 :do
+                    (if (not (null (gethash goes-to-id comes-from)))
+                        (push ent-id (gethash goes-to-id comes-from))
+                        (setf (gethash goes-to-id comes-from) (list ent-id)))))
+        :when (string= "DATA" (token-at statement 0))
+          :do
+             (setf in-data t)
 
-           
-           
-      :finally (return (make-instance 'step-file
-                                      :header (make-instance 'step-header :statements (coerce  (nreverse header-statements) 'vector))
-                                      :statements all-statements
-                                      :comes-from comes-from
-                                      :entity-map entities
-                                      :entity-type-map entity-types
-                                      )))))
+             
+             
+        :finally (return (make-instance 'step-file
+                                        :pathname pname
+                                        :header (make-instance 'step-header :statements (coerce  (nreverse header-statements) 'vector))
+                                        :statements (coerce  all-statements 'vector)
+                                        :comes-from comes-from
+                                        :entity-map entities
+                                        :entity-type-map entity-types
+                                        ))))))
 

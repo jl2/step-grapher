@@ -27,4 +27,4 @@
   (loop 
         :for statement :across (statements obj)
         :do
-           (format stream "~a " statement)))
+           (format stream "~a~%" statement)))
