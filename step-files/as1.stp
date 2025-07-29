@@ -1,4 +1,5 @@
 ISO-10303-21;
+/* My Header Comment*/
 HEADER;
 FILE_DESCRIPTION(('CAx 2nd Joint Test Round - Test Model AS1',
 'Validation Properties Test Model   '),'1');
@@ -6,11 +7,16 @@ FILE_NAME('as1-tc-214.stp',
 '1999-09-15 T09:35:26',
 ('SD Yates '),
 ('Theorem Solutions Ltd'),
+/* An inline comment */
 'THEOREM SOLUTIONS CADDS -> AP214 DIS PREPROCESSOR 4.0.001',
 'CADDS4X/5  - CAMU',
 'AP Ranger   ');
-FILE_SCHEMA(('AUTOMOTIVE_DESIGN { 1 2 10303 214 0 1 1 1 } '));
+FILE_SCHEMA(('AUTOMOTIVE_DESIGN { 1 2 10303 214 0 1 1 1 } /* string comment is included */'));
 ENDSEC;
+/* My
+   second
+   header
+   comment */
 DATA;
 #1=DIMENSIONAL_EXPONENTS(1.0,0.0,0.0,0.0,0.0,0.0,0.0);
 #2=DIMENSIONAL_EXPONENTS(0.0,0.0,0.0,0.0,0.0,0.0,0.0);

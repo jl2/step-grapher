@@ -27,7 +27,7 @@
                      "...")
         text)))
 
-(defun compute-related-entities (step-file entity-ids
+(defun related-entities (step-file entity-ids
                                  &key
                                    (direction :up-and-down)
                                    (radius most-positive-fixnum)
@@ -43,7 +43,7 @@
   "Create a hashtable who's keys are the entity IDs of the entities that are related ~
 to the entities given in entity-ids. ~
 direction controls how parent and child entities are included.
-:up - only parent entities and their parents will be included 
+:up - only parent entities and their parents will be included
 :down - only the child entities and their children will be included
 :all - all parents and all of their children, recursively in both directions
 :up-and-down - :up for parents and :down for children
@@ -53,17 +53,17 @@ direction controls how parent and child entities are included.
     (labels
         ((add-all-refs (eids dir radius)
            ;;(format t "Add-all-refs ~a ~a ~a ~a~%" eids dir radius (hash-table-keys result-table))
-           (loop 
+           (loop
              :with new-radius = (- radius 1)
              :for eid :in eids
-                     
+
              :when (and (not (zerop new-radius))
                         (not (find (entity-type (entity step-file eid))
                                    skip-list :test #'string=))
                         (null (gethash eid result-table)))
                :do
                   (setf (gethash eid result-table) t)
-                          
+
                   (when (and (find dir '(:all :down :up-and-down :down-and-up))
                              (>= radius 0))
                     (add-all-refs (entity-references step-file eid )
@@ -74,20 +74,20 @@ direction controls how parent and child entities are included.
                                   ))
                   (when (and (find dir '(:all :up :up-and-down :down-and-up))
                              (>= radius 0))
-                            
+
                     (add-all-refs (entities-referenced-by step-file eid)
                                   (case dir
                                     (:all :all)
                                     (t :up))
                                   new-radius
                                   )))))
-      (add-all-refs entity-ids direction radius)
+      (add-all-refs (ensure-list entity-ids) direction radius)
       result-table)))
 
 (defun graph-step-file (step-file
                         &key
                           (step-file-pathname (if (eq (type-of step-file) 'step-file)
-                                                  #p"step-file.stp"
+                                                  (step-pathname step-file)
                                                   (find-step-file step-file)))
                           (entities-of-interest nil)
                           (direction :up-and-down)
@@ -96,8 +96,8 @@ direction controls how parent and child entities are included.
                                                            :name (when entities-of-interest
                                                                    (format nil "~a(~{~a~^_~})"
                                                                            (pathname-name step-file-pathname)
-                                                                           entities-of-interest))
-                                                                         
+                                                                           (ensure-list entities-of-interest)))
+
                                                            :type "dot")
                                                           step-file-pathname))
                           (output-type "svg")
@@ -105,7 +105,7 @@ direction controls how parent and child entities are included.
                                                            :name (when entities-of-interest
                                                                    (format nil "~a(~{~a~^_~})"
                                                                            (pathname-name step-file-pathname)
-                                                                           entities-of-interest))
+                                                                           (ensure-list entities-of-interest)))
                                                            :type output-type)
                                                           step-file-pathname))
                           (open-file t)
@@ -124,7 +124,7 @@ direction controls how parent and child entities are included.
                                        "EDGE_LOOP"
                                       ;; "EDGE_CURVE"
                                        )))
-  "Create (and optionally display) a graph of the STEP file named by step-file-name. ~
+                          "Create (and optionally display) a graph of the STEP file named by step-file-name. ~
 entities-of-interest is a list of entity IDs to filter on.  When non-nil, only these ~
 entities and, recursively, the entities they go to or that go to them will be graphed. ~
 Entity types listed in skip-list will not be represented in the output graph unless ~
@@ -138,10 +138,10 @@ If open-file is a string, it should be the name of a program to open out-file-na
   (let* ((step-file (typecase step-file
                       (step-file step-file)
                       (t (read-step-file (find-step-file step-file)))))
-         
+
          (real-entities-of-interest (if entities-of-interest
-                                        (compute-related-entities step-file
-                                                                  entities-of-interest
+                                        (related-entities step-file
+                                                                  (ensure-list entities-of-interest)
                                                                   :direction direction
                                                                   :skip-list skip-list
                                                                   :radius radius)
@@ -186,8 +186,8 @@ If open-file is a string, it should be the name of a program to open out-file-na
                             from
                             goes-to
                             )))
-      
-      
+
+
       (format dots "}~%")))
 
   ;; Use GraphViz to generate the graph

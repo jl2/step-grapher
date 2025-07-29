@@ -19,7 +19,7 @@
   ((pathname
     :accessor step-pathname
     :type pathname
-    :initarg pathname
+    :initarg :pathname
     :documentation "The pathname of the STEP file this object was read from.")
 
    (header
@@ -39,7 +39,7 @@
     :accessor entity-type-map
     :type hashtable
     :initarg :entity-type-map
-    :initform (make-hash-table)
+    :initform (make-hash-table :test 'equal)
     :documentation "A hashtable mapping entity-types to a list of entity IDs of that type.")
 
    (comes-from
@@ -71,22 +71,40 @@ will contain (entity-id entity)")
   (gethash entity-id (comes-from step-file)))
 
 (defun entities-of-type (step-file entity-type)
-  (gethash (entity-type-map step-file) entity-type))
+  (gethash entity-type (entity-type-map step-file)))
+
+(defun get-entities (step-file entity-id-list)
+  (with-slots (entity-map) step-file
+    (mapcar (lambda (x)
+              (gethash x entity-map))
+            (ensure-list entity-id-list))))
 
 (defun statement-at (step-file idx)
   (aref (statements step-file) idx))
 
 (defun summarize (step-file
                   &key
+                    (entity-count nil)
                     (full t)
                     )
   (with-slots (header entity-map entity-type-map comes-from) step-file
-    (format t "Step file has:~%")
-    (format t "  ~a entities~%" (hash-table-count entity-map))
-    (format t "  ~a entity types~%" (hash-table-count entity-type-map))
-    (when full
-      (format t "Top 10 Entity types by popularity:~%~{  ~a~^~%~}~%" (subseq  (sort (hash-table-keys entity-type-map) #'> :key (lambda (key) (length (gethash key entity-type-map))))
-                                                                       0 10)))))
+    (let ((sortted-entity-list (sort (hash-table-keys entity-type-map)
+                  #'>
+                  :key (lambda (key)
+                         (length (gethash key entity-type-map))))))
+      (format t "Step file has:~%")
+      (format t "  ~a entities~%" (hash-table-count entity-map))
+      (format t "  ~a entity types~%" (hash-table-count entity-type-map))
+      (cond ((and entity-count full)
+
+             (format t "Top ~a Entity types by popularity:~%~{  ~a~^~%~}~%"
+                     entity-count
+                     (subseq sortted-entity-list
+                             0
+                             entity-count)))
+            (full
+             (format t "Entity types by popularity:~%~{  ~a~^~%~}~%"
+                     sortted-entity-list))))))
 
 (defparameter *step-file-dirs* (list
                                 (asdf:system-relative-pathname :step-grapher "step-files/")
@@ -131,7 +149,7 @@ will contain (entity-id entity)")
         :with header-statements = nil
         :with entities = (make-hash-table)
         :with comes-from = (make-hash-table)
-        :with entity-types = (make-hash-table)
+        :with entity-types = (make-hash-table :test 'equal)
         :with in-header = nil
         :with in-data = nil
         :for statement = (read-step-statement ins)
@@ -142,7 +160,7 @@ will contain (entity-id entity)")
         ;; In the HEADER section, collect the statement indices in order to create a step-header.
         ;; This just allows quick access to those statements later on... they're not looked at too
         ;; carefully yet...
-        :when (string= "HEADER" (token-at statement 0)) 
+        :when (string= "HEADER" (token-at statement 0))
           :do
              (setf in-header t)
         :when in-header
@@ -180,9 +198,6 @@ will contain (entity-id entity)")
         :when (string= "DATA" (token-at statement 0))
           :do
              (setf in-data t)
-
-             
-             
         :finally (return (make-instance 'step-file
                                         :pathname pname
                                         :header (make-instance 'step-header :statements (coerce  (nreverse header-statements) 'vector))
@@ -191,4 +206,3 @@ will contain (entity-id entity)")
                                         :entity-map entities
                                         :entity-type-map entity-types
                                         ))))))
-

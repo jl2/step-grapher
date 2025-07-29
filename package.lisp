@@ -23,7 +23,7 @@
            #:*step-file-dirs*
 
            #:read-step-file
-           
+
            #:graph-step-file
 
 
@@ -36,6 +36,7 @@
            #:entity-type-map
            #:comes-from
            #:statements
+           #:get-entities
 
            #:step-entity
            #:id
@@ -57,5 +58,5 @@
            #:entities-of-type
            #:entity-references
            #:entities-referenced-by
-           #:compute-related-entities
+           #:related-entities
            ))
