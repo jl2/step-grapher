@@ -62,48 +62,56 @@ will contain (entity-id entity)")
 
 
 (defun entity (step-file entity-id)
+  "Return the entity with the specified ID."
   (gethash entity-id (entity-map step-file)))
 
 (defun entity-references (step-file entity-id)
+  "Return the IDs of entities referenced by the entity with the specified ID."
   (references (entity step-file entity-id)))
 
 (defun entities-referenced-by (step-file entity-id)
+  "Return the IDs of entities that reference the specified entity."
   (gethash entity-id (comes-from step-file)))
 
 (defun entities-of-type (step-file entity-type)
+  "Return a list of entity IDs of the specified type."
   (gethash entity-type (entity-type-map step-file)))
 
 (defun get-entities (step-file entity-id-list)
+  "Multiple value version of `entity`."
   (with-slots (entity-map) step-file
     (mapcar (lambda (x)
               (gethash x entity-map))
             (ensure-list entity-id-list))))
 
 (defun statement-at (step-file idx)
+  "Return a statement by index."
   (aref (statements step-file) idx))
 
 (defun summarize (step-file
                   &key
                     (entity-count nil)
                     (full t)
+                    (stream t)
                     )
+  "Write some information about step-file to stream."
   (with-slots (header entity-map entity-type-map comes-from) step-file
     (let ((sortted-entity-list (sort (hash-table-keys entity-type-map)
-                  #'>
-                  :key (lambda (key)
-                         (length (gethash key entity-type-map))))))
-      (format t "Step file has:~%")
-      (format t "  ~a entities~%" (hash-table-count entity-map))
-      (format t "  ~a entity types~%" (hash-table-count entity-type-map))
+                                     #'>
+                                     :key (lambda (key)
+                                            (length (gethash key entity-type-map))))))
+      (format stream "Step file has:~%")
+      (format stream "  ~a entities~%" (hash-table-count entity-map))
+      (format stream "  ~a entity types~%" (hash-table-count entity-type-map))
       (cond ((and entity-count full)
 
-             (format t "Top ~a Entity types by popularity:~%~{  ~a~^~%~}~%"
+             (format stream "Top ~a Entity types by popularity:~%~{  ~a~^~%~}~%"
                      entity-count
                      (subseq sortted-entity-list
                              0
                              entity-count)))
             (full
-             (format t "Entity types by popularity:~%~{  ~a~^~%~}~%"
+             (format stream "Entity types by popularity:~%~{  ~a~^~%~}~%"
                      sortted-entity-list))))))
 
 (defparameter *step-file-dirs* (list
@@ -116,33 +124,34 @@ will contain (entity-id entity)")
                                 "~/data/3d-models/step-files/")
   "Directories in which to look for STEP files.  Used to search if a full path is not used.")
 
-(defun find-step-file (fname)
-  "Search for a  file name (like \"vice.stp\" in th *step-file-dirs*"
-  (ctypecase fname
+(defun find-step-file (file-name)
+  "Return a pathname of a STEP file named file-name.~
+If file-name is a string, search for it in *step-file-dirs* and return a pathname if found.~
+If file-name is a pathname, returns (probe-file file-name)."
+  (ctypecase file-name
 
     ;; If a string is given, search for the file.
     (string
 
      ;; First probe for it to see if it's an absolute path,
      ;; or a relative path that exists in the current directory
-     (if-let ((path (probe-file fname)))
+     (if-let ((path (probe-file file-name)))
        path
 
        ;; It wasn't, so search *step-file-dirs* for it.
        (loop
          :for path :in *step-file-dirs*
          :do
-            (when-let (the-file (probe-file (merge-pathnames fname path)))
+            (when-let (the-file (probe-file (merge-pathnames file-name path)))
               (return the-file))
-         :finally (error "Could not find ~a" fname))))
+         :finally (error "Could not find ~a" file-name))))
 
     ;; If a pathname was given, just probe it to make sure it exists
     (pathname
-     (probe-file fname))))
+     (probe-file file-name))))
 
 (defun read-step-file (fname &key (encoding :utf-8))
-  "Read a step file into a list of entities.  The list will include *all* entities, even header
- and data entries."
+  "Read a step file into a step-file object."
   (let ((pname (find-step-file fname)))
     (with-input-from-file (ins pname :external-format encoding)
       (loop
