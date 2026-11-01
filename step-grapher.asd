@@ -22,8 +22,7 @@
 
   :depends-on (#:alexandria
                #:uiop
-               #+abcl #:cl-unicode
-               #+ccl #:cl-unicode
+               #-sbcl #:cl-unicode
                #:cl-libre-translate
                #:cl-argparse
                #:cl-ppcre

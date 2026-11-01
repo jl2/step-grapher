@@ -139,14 +139,14 @@ direction controls how parent and child entities are included.
                              (translate-token val)
                              :keyword))
                           (list
-                           "CARTESIAN_POINT"
-                           "ORIENTED_EDGE"
+                           "CARTESIAN-POINT"
+                           "ORIENTED-EDGE"
                            "DIRECTION"
                            "LINE"
                            "VECTOR"
-                           "VERTEX_POINT"
-                           "EDGE_LOOP"
-                           "EDGE_CURVE")
+                           "VERTEX-POINT"
+                           "EDGE-LOOP"
+                           "EDGE-CURVE")
                           )))
   "Create (and optionally display) a graph of the STEP file named by step-file-name. ~
 entities-of-interest is a list of entity IDs to filter on.  When non-nil, only these ~
