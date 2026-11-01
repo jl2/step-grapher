@@ -19,29 +19,40 @@
 (defun elide-text (text max-length)
   "Shorten text to max-length.  If the string is longer than max-length, shortens to
  (- max-length 3) and appends \"...\" "
-  (let ((elide-text (> (length text)  max-length)))
-    (if elide-text
-        (concatenate 'string
-                     (subseq text 0
-                             (max 0 (- max-length 3)))
-                     "...")
-        text)))
+  (declare (optimize (speed 3))
+           (type string text)
+           (type fixnum max-length))
+  (if (> (length text)
+         max-length)
+      (concatenate 'string
+                   (subseq text 0
+                           (max 0 (- max-length 3)))
+                   "...")
+      text))
 
 (defun related-entities (step-file entity-ids
                                  &key
                                    (direction :up-and-down)
                                    (radius most-positive-fixnum)
-                                   (skip-list '("CARTESIAN_POINT"
-                                                ;;"ORIENTED_EDGE"
-                                                "DIRECTION"
-                                                "LINE"
-                                                "VECTOR"
-                                                "VERTEX_POINT"
-                                                "EDGE_LOOP"
-                                                ;; "EDGE_CURVE"
+                                   (skip-list (mapcar (lambda (val)
+                                                        (intern
+                                                         (translate-token val)
+                                                         :keyword))
+                                                      (list
+                                                       "CARTESIAN_POINT"
+                                                       "ORIENTED_EDGE"
+                                                       "DIRECTION"
+                                                       "LINE"
+                                                       "VECTOR"
+                                                       "VERTEX_POINT"
+                                                       "EDGE_LOOP"
+                                                       "EDGE_CURVE")
                                                 )))
-  "Create a hashtable who's keys are the entity IDs of the entities that are related ~
-to the entities given in entity-ids. ~
+  "Create a hashtable who's keys are the entity IDs of the entities that are related
+to the entities given in entity-ids.
+
+radius controls how many entities in each direction to show.
+
 direction controls how parent and child entities are included.
 :up - only parent entities and their parents will be included
 :down - only the child entities and their children will be included
@@ -49,9 +60,16 @@ direction controls how parent and child entities are included.
 :up-and-down - :up for parents and :down for children
 :down-and-up - :down for parents and :up for children
 "
+  (declare (type step-file step-file)
+           (type list entity-ids)
+           (type (member :up :down :all :up-and-down :down-and-up) direction)
+           (type integer radius)
+           (type list skip-list))
+
   (let ((result-table (make-hash-table :test 'equal)))
     (labels
         ((add-all-refs (eids dir radius)
+
            ;;(format t "Add-all-refs ~a ~a ~a ~a~%" eids dir radius (hash-table-keys result-table))
            (loop
              :with new-radius = (- radius 1)
@@ -59,7 +77,7 @@ direction controls how parent and child entities are included.
 
              :when (and (not (zerop new-radius))
                         (not (find (entity-type (entity step-file eid))
-                                   skip-list :test #'string=))
+                                   skip-list :test #'eq))
                         (null (gethash eid result-table)))
                :do
                   (setf (gethash eid result-table) t)
@@ -84,47 +102,53 @@ direction controls how parent and child entities are included.
       (add-all-refs (ensure-list entity-ids) direction radius)
       result-table)))
 
-(defun graph-step-file (step-file
-                        &key
-                          (step-file-pathname (if (eq (type-of step-file) 'step-file)
-                                                  (step-pathname step-file)
-                                                  (find-step-file step-file)))
-                          (entities-of-interest nil)
-                          (direction :up-and-down)
-                          (radius most-positive-fixnum)
-                          (dot-file-name (merge-pathnames (make-pathname
-                                                           :name (when entities-of-interest
-                                                                   (format nil "~a(~{~a~^_~})"
-                                                                           (pathname-name step-file-pathname)
-                                                                           (ensure-list entities-of-interest)))
+(defun graph-step-file
+    (step-file
+     &key
+       (step-file-pathname (if (eq (type-of step-file) 'step-file)
+                               (step-pathname step-file)
+                               (find-step-file step-file)))
+       (entities-of-interest nil)
+       (direction :up-and-down)
+       (radius most-positive-fixnum)
+       (dot-file-name (merge-pathnames (make-pathname
+                                        :name (when entities-of-interest
+                                                (format nil "~a(~{~a~^_~})"
+                                                        (pathname-name step-file-pathname)
+                                                        (ensure-list entities-of-interest)))
 
-                                                           :type "dot")
-                                                          step-file-pathname))
-                          (output-type "svg")
-                          (out-file-name (merge-pathnames (make-pathname
-                                                           :name (when entities-of-interest
-                                                                   (format nil "~a(~{~a~^_~})"
-                                                                           (pathname-name step-file-pathname)
-                                                                           (ensure-list entities-of-interest)))
-                                                           :type output-type)
-                                                          step-file-pathname))
-                          (open-file t)
-                          (keep-dot t)
-                          (node-sep 0.4)
-                          (rank-sep 2.0)
-                          (spline-type "true")
-                          (graph-cmd "dot")
-                          (wait-for-dot open-file)
-                          (skip-list '("CARTESIAN_POINT"
-                                       ;;"ORIENTED_EDGE"
-                                       "DIRECTION"
-                                       "LINE"
-                                       "VECTOR"
-                                       "VERTEX_POINT"
-                                       "EDGE_LOOP"
-                                      ;; "EDGE_CURVE"
-                                       )))
-                          "Create (and optionally display) a graph of the STEP file named by step-file-name. ~
+                                        :type "dot")
+                                       step-file-pathname))
+       (output-type "svg")
+       (out-file-name (merge-pathnames (make-pathname
+                                        :name (when entities-of-interest
+                                                (format nil "~a(~{~a~^_~})"
+                                                        (pathname-name step-file-pathname)
+                                                        (ensure-list entities-of-interest)))
+                                        :type output-type)
+                                       step-file-pathname))
+       (open-file t)
+       (keep-dot t)
+       (node-sep 0.4)
+       (rank-sep 2.0)
+       (spline-type "true")
+       (graph-cmd "dot")
+       (wait-for-dot open-file)
+       (skip-list (mapcar (lambda (val)
+                            (intern
+                             (translate-token val)
+                             :keyword))
+                          (list
+                           "CARTESIAN_POINT"
+                           "ORIENTED_EDGE"
+                           "DIRECTION"
+                           "LINE"
+                           "VECTOR"
+                           "VERTEX_POINT"
+                           "EDGE_LOOP"
+                           "EDGE_CURVE")
+                          )))
+  "Create (and optionally display) a graph of the STEP file named by step-file-name. ~
 entities-of-interest is a list of entity IDs to filter on.  When non-nil, only these ~
 entities and, recursively, the entities they go to or that go to them will be graphed. ~
 Entity types listed in skip-list will not be represented in the output graph unless ~
@@ -137,32 +161,43 @@ If open-file is a string, it should be the name of a program to open out-file-na
 
   (let* ((step-file (typecase step-file
                       (step-file step-file)
+                      (stream (read-step step-file))
                       (t (read-step-file (find-step-file step-file)))))
 
+         ;; If entities-of-interest is empty, then use the entity-map containing
+         ;; all of the entities.
          (real-entities-of-interest (if entities-of-interest
                                         (related-entities step-file
-                                                                  (ensure-list entities-of-interest)
-                                                                  :direction direction
-                                                                  :skip-list skip-list
-                                                                  :radius radius)
+                                                          (ensure-list entities-of-interest)
+                                                          :direction direction
+                                                          :skip-list skip-list
+                                                          :radius radius)
                                         (entity-map step-file))))
-    ;; Generate the .dot file
+    ;; Open the file an doutput the dot header with the parameters
     (with-output-to-file (dots dot-file-name)
       (format dots
               ;; TODO: Allow more customization here
-              "digraph ~s { rankdir=\"LR\"~%~%ranksep=~a~%nodesep=~a~%overlap=false~%splines=~a~%"
+              "digraph ~s {
+  rankdir=\"LR\"~
+  ranksep=~a
+  nodesep=~a
+  overlap=false
+  splines=~a
+"
               (namestring step-file-pathname)
               rank-sep
               node-sep
               spline-type)
 
       (loop
+        ;; The hash values are the entities themselves if entities-of-interest was nil,
+        ;; or t if
         :for ent-id :being :the :hash-keys :of real-entities-of-interest
         :for entity = (gethash ent-id (entity-map step-file))
         :for should-show = (and
                             (not (find (entity-type entity) skip-list :test #'string=))
                             (gethash ent-id real-entities-of-interest))
-        :for ent-type = (entity-type entity)
+        ;; :for ent-type = (entity-type entity)
         :when should-show
           :do
              (format dots
@@ -176,9 +211,8 @@ If open-file is a string, it should be the name of a program to open out-file-na
                :for goes-to :in (references entity)
                :for goes-to-type = (entity-type (entity step-file goes-to))
                :for should-show-ref = (and
-                                   (gethash goes-to real-entities-of-interest)
-                                   (not (find goes-to-type skip-list :test #'string=))
-                                   )
+                                       (gethash goes-to real-entities-of-interest)
+                                       (not (find goes-to-type skip-list :test #'eq)))
                :when should-show-ref
                  :do
                     (format dots
@@ -212,7 +246,7 @@ If open-file is a string, it should be the name of a program to open out-file-na
            (uiop:launch-program (format nil "~a ~s &" open-file (namestring out-file-name))))
           (open-file
            (let ((open-program (assoc-value '(("pdf" . "mupdf")
-                                              ("svg" . "firefox")
+                                              ("svg" . "librewolf")
                                               ("png" . "xnview")
                                               ("jpg" . "xnview"))
                                             output-type :test #'string-equal)))

@@ -23,9 +23,39 @@
     :documentation "The string tokens that make up the statement.."
     )))
 
+(defparameter *statement-whitespace-seperator* " ")
+(defparameter *source-language* :en)
+(defparameter *target-language* :en)
+
+(defun is-symbolic-token (token)
+  (let ((first-char (aref token 0)))
+    (and
+     (char/= #\( first-char)
+     (char/= #\) first-char)
+     (char/= #\. first-char)
+     (char/= #\, first-char)
+     (char/= #\' first-char)
+     (char/= #\# first-char)
+     (alpha-char-p first-char)
+     (symbolp (read-from-string token nil nil)))))
+
+(defun translate-token (token)
+  (if (and (not (eq *target-language*
+                    *source-language*))
+           (is-symbolic-token token))
+      (intern (substitute #\_ #\space
+                          (string-upcase (lt:cached-translate  (string-downcase (substitute #\space #\_ token))
+                                                               :source *source-language*
+                                                               :target *target-language*)))
+              :keyword)
+      token))
+
 (defmethod cl:print-object ((object step-statement) stream)
   (with-slots (tokens) object
-    (format stream "~{~a~^ ~}" (coerce tokens 'list))))
+    (loop
+      :for token :across tokens
+      :do (format stream "~a" token))
+    (format stream ";")))
 
 (defun token-count (statement)
   (length (slot-value statement 'tokens)))
@@ -38,8 +68,9 @@
   "Read the next statement from stream and try to parse it into a step-statement. ~
 Returns nil at end of file. ~
 Condenses contiguous white space in the statement down to one space."
-  (declare (optimize (speed 3)))
+  (declare (optimize (speed 3) (safety 0) (debug 0)))
   (let* (
+         ;; These characters separate tokens
          (+token-seperators+ '(
                                #\(
                                #\)
@@ -48,6 +79,7 @@ Condenses contiguous white space in the statement down to one space."
                                #\,
                                #\;
                                ))
+         ;; semicolons end a token
          (+statement-end+ #\;)
          (tokens
            (loop
@@ -56,7 +88,7 @@ Condenses contiguous white space in the statement down to one space."
              ;; whitespace/non-whitespace boundaries.
              :for previous-was-whitespace :of-type (or t nil) = nil
                :then is-whitespace
-             
+
              :for prev-char = nil
                :then next-char
 
@@ -90,7 +122,7 @@ Condenses contiguous white space in the statement down to one space."
                :then (and in-comment
                           (char= prev-char #\*)
                           (char= next-char #\/))
-             
+
              ;; Keep track of white space boundaries
              :for is-whitespace = (or
                                    in-comment
@@ -128,16 +160,16 @@ Condenses contiguous white space in the statement down to one space."
                                   (and is-whitespace
                                        (not in-string)
                                        (not previous-was-whitespace))
-                                  (and 
+                                  (and
                                    token-sep (not was-token-sep))
                                   was-token-sep)
 
              ;; :when in-comment
              ;;   :do
-             ;;      (loop 
+             ;;      (loop
              ;;        :for pc = next-char
              ;;          :then nc
-                    
+
              ;;        :for nc = (peek-char t stream nil nil nil)
              ;;          :then (peek-char nil stream nil nil nil)
              ;;        :until (and (char= pc #\*)
@@ -151,17 +183,17 @@ Condenses contiguous white space in the statement down to one space."
                         ;; (not in-comment)
                         (not (zerop (length current-token)))
                         (not end-comment))
-                 :collect (coerce current-token 'string)
+               :collect (translate-token (coerce current-token 'string))
 
              ;; Stop at the end
              :until the-end
 
              ;; Collect the previous token if it's non-zero length
              :when (and token-end
-                         (not in-comment)
+                        (not in-comment)
                         (not (zerop (length current-token)))
                         (not end-comment))
-               :collect (coerce current-token 'string)
+               :collect (translate-token (coerce current-token 'string))
 
              ;; :when in-comment
              ;;   :do (format t "in-comment: ~a~%")
@@ -189,8 +221,12 @@ Condenses contiguous white space in the statement down to one space."
                :do
                   ;; We've peeked and *know* there is something here, so error if there isn't for some reason.
                   (let ((next-char (read-char stream)))
-                    (vector-push-extend next-char current-token))
+                    (when (or in-string
+                              (and (not in-string)
+                                   (not (whitespace-p next-char))))
+                      (vector-push-extend next-char current-token)))
              :finally (read-char stream nil nil))))
     (when (not (zerop (length tokens)))
-      (make-instance 'step-statement :tokens (coerce tokens 'vector)))))
-
+      (make-instance 'step-statement
+                     :tokens (coerce tokens 'vector)
+                     ))))

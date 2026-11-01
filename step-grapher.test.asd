@@ -27,7 +27,7 @@
 
   :depends-on ( :step-grapher
                 :fiveam)
-  
+
   :components ((:module "t"
                 :components
                 ((:file "package"))))

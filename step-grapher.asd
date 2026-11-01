@@ -24,8 +24,10 @@
                #:uiop
                #+abcl #:cl-unicode
                #+ccl #:cl-unicode
+               #:cl-libre-translate
                #:cl-argparse
                #:cl-ppcre
+               #:str
                )
 
   :components ((:file "package")

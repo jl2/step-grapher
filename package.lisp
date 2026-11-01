@@ -21,12 +21,20 @@
            #:find-step-file
            #:*step-file-dirs*
 
+           #:read-step
            #:read-step-file
 
            #:graph-step-file
 
+           #:translate-language
+           #:*target-language*
+           #:*source-language*
 
+           #:show-inspector
+           #:inspect-entities
            #:step-file
+           #:dereference
+           #:show-inspector
            #:summarize
            #:step-statement
            #:step-header
@@ -36,6 +44,9 @@
            #:comes-from
            #:statements
            #:get-entities
+
+           #:entity-types
+           #:entity-ids
 
            #:step-entity
            #:id

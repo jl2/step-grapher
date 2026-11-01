@@ -23,7 +23,7 @@
    ))
 
 (defmethod print-object ((obj step-header) stream)
-  (loop 
+  (loop
     :for statement :across (statements obj)
     :do
        (format stream "~a~%" statement)))

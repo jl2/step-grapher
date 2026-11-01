@@ -1,4 +1,3 @@
-;; utilities.lisp
 ;; Copyright (c) 2025 Jeremiah LaRocco <jeremiah_larocco@fastmail.com>
 
 ;; Permission to use, copy, modify, and/or distribute this software for any
@@ -26,4 +25,3 @@
   "Check if char is a digit 0-9."
   (declare (optimize (speed 3) (debug 0) (safety 0)))
   (find char #(#\0 #\1 #\2 #\3 #\4 #\5 #\6 #\7 #\8 #\9) :test #'char=))
-
