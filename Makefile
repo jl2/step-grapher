@@ -1,8 +1,8 @@
+# Copyright (c) 2026 Jeremiah LaRocco <jeremiah_larocco@fastmail.com>
+
 # Build step-grapher
 
-# Build ttf-utils
-
-ttf-utils: *.lisp *.asd Makefile
+step-grapher: *.lisp *.asd Makefile
 	buildapp --output ttf-utils \
              --load ~/quicklisp/setup.lisp \
              --eval '(ql:quickload :step-grapher)' \
